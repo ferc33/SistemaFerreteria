@@ -11,7 +11,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
-import controlador.BaseDatos;
+import controlador.Controlador;
 import java.awt.Component;
 import java.awt.Image;
 import java.awt.event.KeyAdapter;
@@ -96,7 +96,7 @@ public class vistaFrame extends javax.swing.JFrame {
     DefaultComboBoxModel modeloComboClientes = new DefaultComboBoxModel();
 
     DefaultListModel<Producto> modeloListaProductos = new DefaultListModel<Producto>();
-    BaseDatos base = new BaseDatos();
+    Controlador base = new Controlador();
     int filaSeleccionada;
     boolean Seleccion = false;
     private double sumatoria = 0;

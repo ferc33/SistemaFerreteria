@@ -15,7 +15,7 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import controlador.BaseDatos;
+import controlador.Controlador;
 import modelo.Categoria;
 import modelo.Conexion;
 import modelo.Producto;
@@ -79,7 +79,7 @@ public class LaminaPrincipal extends JPanel {
 	private ButtonGroup grupo_botones;
 	private DefaultComboBoxModel modeloProveedores = null;
 	private DefaultComboBoxModel modeloCategorias = null;
-	private BaseDatos base = new BaseDatos();
+	private Controlador base = new Controlador();
 	private ArrayList<Categoria> listaCategorias;
 	private ArrayList<Proveedor> listaProveedores;
 	private Producto productoSeleccionado = null;
@@ -163,6 +163,11 @@ public class LaminaPrincipal extends JPanel {
 		comboBoxProveedores.setBounds(197, 290, 178, 24);
 		cargarModeloProv();
 		add(comboBoxProveedores);
+		
+		txtIdProduct = new JTextField();
+		txtIdProduct.setBounds(374, 243, 114, 28);
+		add(txtIdProduct);
+		txtIdProduct.setColumns(10);
 
 	}
 
@@ -527,7 +532,7 @@ public class LaminaPrincipal extends JPanel {
 		ImageIcon ImagenProducto = null;
 
 		try {
-			InputStream is = new BaseDatos().buscarFoto(prod);
+			InputStream is = new Controlador().buscarFoto(prod);
 			BufferedImage bi = ImageIO.read(is);
 			ImagenProducto = new ImageIcon(bi);
 
@@ -641,6 +646,7 @@ public class LaminaPrincipal extends JPanel {
 	private JTextField txtProveedores;
 	private JLabel imgLabel;
 	private JComboBox comboBoxCategoria_1;
+	private JTextField txtIdProduct;
 
 	public void cargarModeloTabla() {
 
@@ -831,6 +837,7 @@ public class LaminaPrincipal extends JPanel {
 
 	private void añadirArticulo() {
 		try {
+			int idProducto = Integer.parseInt(txtIdProduct.getText());
 			String idprod = txtIdProducto.getText();
 			String nombre = txtNombre.getText().toUpperCase();
 			int stock = Integer.parseInt(campoStock.getText());
@@ -851,7 +858,7 @@ public class LaminaPrincipal extends JPanel {
 
 			if (imgArticleFile == null) {
 
-				Producto producto = new Producto(idprod, nombre, stock, codigoProveedor, null, pCosto, pVenta, pDolar,
+				Producto producto = new Producto(idProducto,idprod, nombre, stock, codigoProveedor, null, pCosto, pVenta, pDolar,
 						0, idc, idp, iva, bon1, bon2, bon3, bon4, flete, ganancia);
 
 				base.insertarProducto(producto);
@@ -862,7 +869,7 @@ public class LaminaPrincipal extends JPanel {
 
 			} else {
 
-				Producto producto = new Producto(idprod, nombre, stock, codigoProveedor, imgArticleFile, pCosto, pVenta,
+				Producto producto = new Producto(idProducto,idprod, nombre, stock, codigoProveedor, imgArticleFile, pCosto, pVenta,
 						pDolar, 0, idc, idp, iva, bon1, bon2, bon3, bon4, flete, ganancia);
 				base.insertarProducto(producto);
 
@@ -882,6 +889,7 @@ public class LaminaPrincipal extends JPanel {
 
 	public void DeleteProducto() {
 		try {
+			int idProducto = Integer.parseInt(txtIdProduct.getText());
 			String id = txtIdProducto.getText();
 			String nombre = "";
 			int stock = 0;
@@ -902,7 +910,7 @@ public class LaminaPrincipal extends JPanel {
 					* (1 + (flete / 100)) * (1 + (iva / 100)) * (1 + (ganancia / 100)));
 			txtPrecioVenta.setText(String.valueOf(precioVenta));
 
-			Producto producto = new Producto(id, nombre, stock, codigoProveedor, pCosto, precioVenta, existencia,
+			Producto producto = new Producto(idProducto,id, nombre, stock, codigoProveedor, pCosto, precioVenta, existencia,
 					categoria.getIdCategoria(), proveedor.getIdProveedor(), iva, bon1, bon2, bon3, bon4, flete,
 					ganancia);
 
@@ -918,7 +926,8 @@ public class LaminaPrincipal extends JPanel {
 
 	public void actualizarProducto() {
 		try {
-
+			int idProducto = Integer.parseInt(txtIdProduct.getText());
+			String id = txtIdProducto.getText();
 			String nombre = txtNombre.getText().toUpperCase();
 			int stock = Integer.parseInt(campoStock.getText());
 			String codigoProveedor = txtClaveProveedor.getText().toUpperCase();
@@ -939,7 +948,7 @@ public class LaminaPrincipal extends JPanel {
 
 			if (imgArticleFile == null) {
 
-				Producto producto = new Producto(nombre, stock, codigoProveedor, null, pCosto, pVenta, pDolar, 0,
+				Producto producto = new Producto( idProducto,id,nombre,stock, codigoProveedor, null, pCosto, pVenta, pDolar, 0,
 						categoria.getIdCategoria(), proveedor.getIdProveedor(), iva, bon1, bon2, bon3, bon4, flete,
 						ganancia);
 
@@ -951,7 +960,7 @@ public class LaminaPrincipal extends JPanel {
 
 			} else {
 
-				Producto producto = new Producto(nombre, stock, codigoProveedor, imgArticleFile, pCosto, pVenta, pDolar,
+				Producto producto = new Producto(idProducto,id,nombre, stock, codigoProveedor, imgArticleFile, pCosto, pVenta, pDolar,
 						0, categoria.getIdCategoria(), proveedor.getIdProveedor(), iva, bon1, bon2, bon3, bon4, flete,
 						ganancia);
 				base.actualizarProducto(producto, true);
@@ -972,7 +981,7 @@ public class LaminaPrincipal extends JPanel {
 	private void actualizarArticulo() {
 
 		try {
-
+			int idProducto = Integer.parseInt(txtIdProduct.getText());
 			String id = txtIdProducto.getText();
 			String nombre = txtNombre.getText().toUpperCase();
 			int stock = Integer.parseInt(campoStock.getText());
@@ -999,7 +1008,7 @@ public class LaminaPrincipal extends JPanel {
 
 			if (imgArticleFile == null) {
 
-				Producto producto = new Producto(id, nombre, stock, codigoProveedor, null, pCosto, precioVenta, dolar,
+				Producto producto = new Producto(idProducto,id, nombre, stock, codigoProveedor, null, pCosto, precioVenta, dolar,
 						0, categoria.getIdCategoria(), proveedor.getIdProveedor(), iva, bon1, bon2, bon3, bon4, flete,
 						ganancia);
 
@@ -1011,7 +1020,7 @@ public class LaminaPrincipal extends JPanel {
 
 			} else {
 
-				Producto producto = new Producto(id, nombre, stock, codigoProveedor, imgArticleFile, pCosto,
+				Producto producto = new Producto(idProducto,id, nombre, stock, codigoProveedor, imgArticleFile, pCosto,
 						precioVenta, dolar, 0, categoria.getIdCategoria(), proveedor.getIdProveedor(), iva, bon1, bon2,
 						bon3, bon4, flete, ganancia);
 				base.actualizarProducto(producto, true);
@@ -1023,7 +1032,7 @@ public class LaminaPrincipal extends JPanel {
 
 			}
 
-			Producto producto = new Producto(id, nombre, stock, codigoProveedor, pCosto, precioVenta, existencia,
+			Producto producto = new Producto(idProducto,id, nombre, stock, codigoProveedor, pCosto, precioVenta, existencia,
 					categoria.getIdCategoria(), proveedor.getIdProveedor(), iva, bon1, bon2, bon3, bon4, flete,
 					ganancia);
 

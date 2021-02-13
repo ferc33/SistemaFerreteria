@@ -10,11 +10,12 @@ public class Categoria {
     
         private int idCategoria;
         private String nomCategoria;
-        private String descCategoria;
+        private int idProveedor;
 
          public Categoria(int idCategoria, String nomCategoria) {
                   this.idCategoria = idCategoria;
                   this.nomCategoria = nomCategoria;
+                  
                
          }
 
@@ -41,7 +42,18 @@ public class Categoria {
     public void setNomCategoria(String nomCategoria) {
         this.nomCategoria = nomCategoria;
     }
-    @Override
+  
+    public int getIdProveedor() {
+		return idProveedor;
+	}
+
+	public void setIdProveedor(int idProveedor) {
+		this.idProveedor = idProveedor;
+	}
+
+
+
+	@Override
    public String toString(){
        return this.nomCategoria;
    }

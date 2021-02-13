@@ -5,7 +5,7 @@
  */
 package vistaInventario;
 
-import controlador.BaseDatos;
+import controlador.Controlador;
 import java.io.File;
 import java.sql.*;
 import java.io.FileInputStream;
@@ -28,7 +28,7 @@ public class VistaExcel extends javax.swing.JFrame {
 
     File archivo = null;
     JFileChooser selecArchivo = new JFileChooser();
-    BaseDatos base;
+    Controlador base;
     Connection conn = null;
     Conexion Conexion = null;
     
@@ -36,7 +36,7 @@ public class VistaExcel extends javax.swing.JFrame {
     public VistaExcel() {
        
         initComponents();       
-        base = new BaseDatos();
+        base = new Controlador();
         Conexion = new Conexion();
      
        

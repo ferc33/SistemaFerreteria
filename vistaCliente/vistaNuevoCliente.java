@@ -5,7 +5,7 @@
  */
 package vistaCliente;
 
-import controlador.BaseDatos;
+import controlador.Controlador;
 import java.util.ArrayList;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -20,7 +20,7 @@ import vistaVentas.vistaFrame;
  */
 public class vistaNuevoCliente extends javax.swing.JDialog {
     
-    BaseDatos base = new BaseDatos();
+    Controlador base = new Controlador();
     vistaFrame vistaVentas = new vistaFrame();
     /**
      * Creates new form vistaNuevoCliente

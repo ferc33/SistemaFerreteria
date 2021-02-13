@@ -4,7 +4,7 @@ import java.io.File;
 
 public class Producto {
 
-
+private int idProducto1;
 private String idProducto;
 private String nomProducto;
 private int stockProducto;
@@ -27,8 +27,9 @@ private double flete;
 
 
 
-public Producto(String idProducto, String nomProducto, int stockProducto, String idProveedorProducto,  double precioCompraProducto, double precioVentaProducto, int existenciasProducto, int idCategoria, int idProveedor,double iva, double bon1, double bon2, double bon3, double bon4, double flete,double ganancia) {
-         this.idProducto = idProducto;
+public Producto(int idProducto1,String idProducto, String nomProducto, int stockProducto, String idProveedorProducto,  double precioCompraProducto, double precioVentaProducto, int existenciasProducto, int idCategoria, int idProveedor,double iva, double bon1, double bon2, double bon3, double bon4, double flete,double ganancia) {
+       this.idProducto1=idProducto1;
+		this.idProducto = idProducto;
          this.nomProducto = nomProducto;
          this.stockProducto = stockProducto;
          this.idProveedorProducto = idProveedorProducto;    
@@ -52,7 +53,8 @@ public Producto(String idProducto, String nomProducto, int stockProducto, String
 
 
     public Producto(String id1,String nombre, int stock, String codigoProveedor,File fotoProducto, double pCosto, double pVenta,double dolar,int existenciasProducto ,int idCategoria, int idProveedor, double iva, double bon1, double bon2, double bon3, double bon4, double flete, double ganancia) {
-      
+        
+    
          this.idProducto = id1;
          this.nomProducto = nombre;
          this.stockProducto = stock;
@@ -73,9 +75,10 @@ public Producto(String idProducto, String nomProducto, int stockProducto, String
          this.flete=flete;
     }
     //UPDATE
-    public Producto(String nombre, int stock, String codigoProveedor,File fotoProducto, double pCosto, double pVenta,double dolar,int existenciasProducto ,int idCategoria, int idProveedor, double iva, double bon1, double bon2, double bon3, double bon4, double flete, double ganancia) {
+    public Producto(int idProducto1,String idProducto,String nombre, int stock, String codigoProveedor,File fotoProducto, double pCosto, double pVenta,double dolar,int existenciasProducto ,int idCategoria, int idProveedor, double iva, double bon1, double bon2, double bon3, double bon4, double flete, double ganancia) {
         
- 
+    	this.idProducto1=idProducto1;
+    	this.idProducto = idProducto;
         this.nomProducto = nombre;
         this.stockProducto = stock;
         this.idProveedorProducto = codigoProveedor;
@@ -205,6 +208,14 @@ public String getIdProveedorProducto() {
 
 public void setIdProveedorProducto(String idProveedorProducto) {
          this.idProveedorProducto = idProveedorProducto;
+}
+
+public int getIdProducto1() {
+	return idProducto1;
+}
+
+public void setIdProducto1(int idProducto1) {
+	this.idProducto1 = idProducto1;
 }
 
 

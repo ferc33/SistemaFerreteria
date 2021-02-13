@@ -12,7 +12,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import controlador.BaseDatos;
+import controlador.Controlador;
 import modelo.Conexion;
 import modelo.Dolar;
 
@@ -26,7 +26,7 @@ public class vistaDolar extends javax.swing.JFrame {
 
     DefaultTableModel modeloDolar = new DefaultTableModel();
 
-    private BaseDatos base = new BaseDatos();
+    private Controlador base = new Controlador();
     private Conexion conexion = null;
 
     public vistaDolar() {
