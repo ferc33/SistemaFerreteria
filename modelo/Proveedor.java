@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Vector;
 
+import javax.swing.DefaultComboBoxModel;
+
 public class Proveedor {
     
     private int idProveedor;
@@ -17,19 +19,24 @@ public class Proveedor {
     
     public Proveedor(int idProveedor, String nomProveedor, String dirProveedor, String mailProveedor, String telProveedor) {
       
-        this.idProveedor=idProveedor;    
-       
+        this.idProveedor=idProveedor;         
         this.nomProveedor = nomProveedor;
         this.dirProveedor = dirProveedor;
         this.mailProveedor = mailProveedor;       
         this.telProveedor = telProveedor;
     }
 
- 
-
-
        
-         public Proveedor() {
+         public Proveedor(String nomProveedor, String dirProveedor, String mailProveedor, String telProveedor) {
+		super();
+		this.nomProveedor = nomProveedor;
+		this.dirProveedor = dirProveedor;
+		this.mailProveedor = mailProveedor;
+		this.telProveedor = telProveedor;
+	}
+
+
+		public Proveedor() {
 		super();
 	}
 
@@ -75,7 +82,8 @@ public class Proveedor {
                   this.telProveedor = telProveedor;
          }
 
-        
+     
+         
 	@Override
     public String toString(){
         return this.nomProveedor;

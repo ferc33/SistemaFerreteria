@@ -46,12 +46,14 @@ import modelo.Categoria;
 import modelo.Conexion;
 import modelo.Producto;
 import modelo.Proveedor;
+import vistaCategoria.VistaCategoria;
 import vistaDolar.vistaDolar;
 import vistaProveedores.VistaProveedores;
 import javax.swing.SwingConstants;
 
 public class MarcoArticulo extends JFrame {
 
+	private 	JLabel lblmsj ;
 	private JPanel laminaP;
 	private JTextField textField;
 	private JTextField txtCosto;
@@ -112,6 +114,7 @@ public class MarcoArticulo extends JFrame {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			
 			public void run() {
 				try {
 					MarcoArticulo frame = new MarcoArticulo();
@@ -161,6 +164,17 @@ public class MarcoArticulo extends JFrame {
 		getContentPane().add(btnProveedor);
 
 		JButton btnCategoria = new JButton();
+		btnCategoria.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				   VistaCategoria vistaD = new VistaCategoria();
+			        vistaD.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			        vistaD.setVisible(true);
+			        vistaD.setAlwaysOnTop(false);
+			        vistaD.setLocationRelativeTo(new MarcoArticulo());
+
+			}
+		});
 		btnCategoria.setText("Categoria");
 		btnCategoria.setFont(new Font("Comfortaa", Font.PLAIN, 12));
 		btnCategoria.setBounds(786, 112, 113, 99);
@@ -199,13 +213,19 @@ public class MarcoArticulo extends JFrame {
 		getContentPane().add(comboBoxProveedores);
 		
 		txtIdProduct = new JTextField();
-		txtIdProduct.setBounds(283, 255, 114, 21);
+		txtIdProduct.setBounds(518, 362, 114, 21);
 		getContentPane().add(txtIdProduct);
 		txtIdProduct.setColumns(10);
+		
+		lblmsj = new JLabel("");		
+		lblmsj.setHorizontalAlignment(SwingConstants.CENTER);
+		lblmsj.setBounds(284, 243, 216, 35);
+		getContentPane().add(lblmsj);
+		txtIdProduct.setVisible(false);
 	}
 	
 
-	
+
 	// INICIAR LOS COMPONENTESs
 		private void initComponents() {
 
@@ -408,6 +428,11 @@ public class MarcoArticulo extends JFrame {
 			getContentPane().add(txtIdProducto);
 
 			btnEliminar = new JButton();
+			btnEliminar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+				}
+			});
 			btnEliminar.setIcon(new ImageIcon(LaminaPrincipal.class.getResource("/Iconos_Imagenes/SALIR_ROJO.png")));
 			btnEliminar.setFont(new Font("Comfortaa", Font.PLAIN, 12));
 			btnEliminar.setBounds(703, 1, 66, 50);
@@ -514,12 +539,11 @@ public class MarcoArticulo extends JFrame {
 
 			panel_1 = new JPanel();
 			panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
-			panel_1.setBounds(526, 68, 243, 198);
+			panel_1.setBounds(519, 57, 250, 209);
 			getContentPane().add(panel_1);
-			panel_1.setLayout(null);
+			panel_1.setLayout(new BorderLayout(0, 0));
 
 			imgLabel = new JLabel("");
-			imgLabel.setBounds(12, 0, 231, 186);
 			panel_1.add(imgLabel);
 
 			getContentPane().setLayout(null);
@@ -890,6 +914,8 @@ public class MarcoArticulo extends JFrame {
 		private void btnAñadirActionPerformed(ActionEvent evt) {
 
 			añadirArticulo();
+			
+			
 
 		}
 
@@ -946,6 +972,8 @@ public class MarcoArticulo extends JFrame {
 			}
 		}
 
+		
+		//LIMPIAR CAMPOS
 		public void DeleteProducto() {
 			try {
 				int idProducto = Integer.parseInt(txtIdProduct.getText());

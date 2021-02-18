@@ -5,6 +5,7 @@
  */
 package Principal;
 
+import com.formdev.flatlaf.intellijthemes.FlatCyanLightIJTheme;
 import com.formdev.flatlaf.intellijthemes.FlatGruvboxDarkHardIJTheme;
 import com.formdev.flatlaf.intellijthemes.FlatMaterialDesignDarkIJTheme;
 import com.formdev.flatlaf.intellijthemes.FlatMaterialDesignDarkIJTheme;
@@ -32,12 +33,12 @@ public class Principal extends javax.swing.JFrame {
 	
     public Principal() {
     	setAlwaysOnTop(true);
-   
+    	
     	
         initComponents();
         getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
     
-        //setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
+        setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
         
         lblNewLabel = new JLabel("");
         lblNewLabel.setIcon(new ImageIcon("/home/ferc/Imágenes/b_grafica_1.jpg"));
@@ -146,9 +147,6 @@ public class Principal extends javax.swing.JFrame {
         jMenuBar1.add(Dolar);
 
         setJMenuBar(jMenuBar1);
-
-     
-
         
     }// </editor-fold>//GEN-END:initComponents
 
@@ -195,7 +193,7 @@ public class Principal extends javax.swing.JFrame {
        
                try {
            
-            UIManager.setLookAndFeel(new FlatMaterialDesignDarkIJTheme());
+            UIManager.setLookAndFeel(new FlatLightOwlContrastIJTheme());
         } catch (UnsupportedLookAndFeelException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -232,7 +230,7 @@ public class Principal extends javax.swing.JFrame {
     public static void main(String args[]) throws ParseException, UnsupportedLookAndFeelException {
                try {
            
-            UIManager.setLookAndFeel(new FlatGruvboxDarkHardIJTheme());
+            UIManager.setLookAndFeel(new FlatAtomOneDarkContrastIJTheme());
         } catch (UnsupportedLookAndFeelException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }

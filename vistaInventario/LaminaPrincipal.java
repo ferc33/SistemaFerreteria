@@ -569,16 +569,6 @@ public class LaminaPrincipal extends JPanel {
 
 	}
 
-	// METODO QUE ACTUALIZA EL JCOMBOX CATEGORIA//
-	/*
-	 * private void addCategoria(Categoria categoria) {
-	 * modeloCategorias.addElement(categoria);
-	 * comboBoxCategoria.setModel(modeloCategorias);
-	 * modeloCategorias.setSelectedItem(categoria);
-	 * 
-	 * }
-	 */
-
 	private void addProveedores() {
 
 		modeloProveedores.addElement(proveedor);

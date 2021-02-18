@@ -5,6 +5,9 @@ import modelo.DetalleVenta;
 import modelo.Producto;
 import modelo.Proveedor;
 import modelo.Ventas;
+import modelo.innerjoin.Productos;
+import vistaProveedores.VistaProveedores;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -233,8 +236,8 @@ public class Controlador {
 
 				FileInputStream fis = new FileInputStream(fileFoto);
 
-				prep = Conexion
-						.prepareStatement("UPDATE `db-sistema`.CAT_PRODUCTOS SET  ID_PROD = ?,NOM_PROD = ?, ID_PROVEEDOR_PROD = ?"
+				prep = Conexion.prepareStatement(
+						"UPDATE `db-sistema`.CAT_PRODUCTOS SET  ID_PROD = ?,NOM_PROD = ?, ID_PROVEEDOR_PROD = ?"
 								+ ", STOCK_PROD= ?,FOTO_PROD= ?,PRECIO_COMPRA_PROD= ?, PRECIO_VENTA_PROD= ?"
 								+ ",ID_PROVEEDOR=?,ID_CATEGORIA=?,IVA = ?"
 								+ ",DOLAR=?,BON1 = ?,BON2 = ?,BON3 = ?,BON4 = ?"
@@ -257,38 +260,38 @@ public class Controlador {
 				prep.setDouble(16, producto.getFlete());
 				prep.setDouble(17, producto.getGanancia());
 				prep.setInt(18, producto.getIdProducto1());
-				
+
 				prep.executeUpdate();
 				// CUANDO NO SE MODIFICA LA IMAGEN
 			} else {
 
-				FileInputStream fis = new FileInputStream(imagen);
+				// FileInputStream fis = new FileInputStream(imagen);
 
-				prep = Conexion
-						.prepareStatement("UPDATE `db-sistema`.CAT_PRODUCTOS SET  ID_PROD =?,NOM_PROD = ?, ID_PROVEEDOR_PROD = ?"
-								+ ", STOCK_PROD= ?,FOTO_PROD= ?,PRECIO_COMPRA_PROD= ?, PRECIO_VENTA_PROD= ?"
+				prep = Conexion.prepareStatement(
+						"UPDATE `db-sistema`.CAT_PRODUCTOS SET  ID_PROD =?,NOM_PROD = ?, ID_PROVEEDOR_PROD = ?"
+								+ ", STOCK_PROD= ?,PRECIO_COMPRA_PROD= ?, PRECIO_VENTA_PROD= ?"
 								+ ",ID_PROVEEDOR=?,ID_CATEGORIA=?,IVA = ?"
 								+ ",DOLAR=?,BON1 = ?,BON2 = ?,BON3 = ?,BON4 = ?"
-								+ ",FLETE = ?,GANANCIA = ? WHERE ID_PRODUCTO= ?");
+								+ ",FLETE = ?,GANANCIA = ? WHERE ID_PRODUCTO = ?");
 
 				prep.setString(1, producto.getIdProducto());
 				prep.setString(2, producto.getNomProducto());
 				prep.setString(3, producto.getIdProveedorProducto());
 				prep.setInt(4, producto.getStockProducto());
-				prep.setBlob(5, fis);
-				prep.setDouble(6, producto.getPrecioCompraProducto());
-				prep.setDouble(7, producto.getPrecioVentaProducto());
-				prep.setInt(8, producto.getIdProveedor());
-				prep.setInt(9, producto.getIdCategoria());
-				prep.setDouble(10, producto.getIva());
-				prep.setDouble(11, producto.getDolar());
-				prep.setDouble(12, producto.getBon1());
-				prep.setDouble(13, producto.getBon2());
-				prep.setDouble(14, producto.getBon3());
-				prep.setDouble(15, producto.getBon4());
-				prep.setDouble(16, producto.getFlete());
-				prep.setDouble(17, producto.getGanancia());
-				prep.setInt(18, producto.getIdProducto1());
+				// prep.setBlob(5, fis);
+				prep.setDouble(5, producto.getPrecioCompraProducto());
+				prep.setDouble(6, producto.getPrecioVentaProducto());
+				prep.setInt(7, producto.getIdProveedor());
+				prep.setInt(8, producto.getIdCategoria());
+				prep.setDouble(9, producto.getIva());
+				prep.setDouble(10, producto.getDolar());
+				prep.setDouble(11, producto.getBon1());
+				prep.setDouble(12, producto.getBon2());
+				prep.setDouble(13, producto.getBon3());
+				prep.setDouble(14, producto.getBon4());
+				prep.setDouble(15, producto.getFlete());
+				prep.setDouble(16, producto.getGanancia());
+				prep.setInt(17, producto.getIdProducto1());
 				prep.executeUpdate();
 			}
 		} catch (Exception ex) {
@@ -303,31 +306,59 @@ public class Controlador {
 
 			File fileFoto = producto.getFotoProducto();
 
-			FileInputStream fis = new FileInputStream(fileFoto);
+			if (fileFoto != null) {
 
-			String sql = "INSERT INTO `db-sistema`.CAT_PRODUCTOS (ID_PROD, NOM_PROD, ID_PROVEEDOR_PROD, STOCK_PROD, FOTO_PROD,PRECIO_COMPRA_PROD, PRECIO_VENTA_PROD, EXISTENCIA_PROD,ID_PROVEEDOR,ID_CATEGORIA,IVA,BON1,BON2,BON3,BON4,FLETE,GANANCIA) "
-					+ "VALUES(?,?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?)";
+				FileInputStream fis = new FileInputStream(fileFoto);
 
-			prep = Conexion.prepareStatement(sql);
-			prep.setString(1, producto.getIdProducto());
-			prep.setString(2, producto.getNomProducto());
-			prep.setString(3, producto.getIdProveedorProducto());
-			prep.setDouble(4, producto.getStockProducto());
-			prep.setBlob(5, fis);
-			prep.setDouble(6, producto.getPrecioCompraProducto());
-			prep.setDouble(7, producto.getPrecioVentaProducto());
-			prep.setDouble(8, producto.getExistenciasProducto());
-			prep.setInt(9, producto.getIdProveedor());
-			prep.setInt(10, producto.getIdCategoria());
-			prep.setDouble(11, producto.getIva());
-			prep.setDouble(12, producto.getBon1());
-			prep.setDouble(13, producto.getBon2());
-			prep.setDouble(14, producto.getBon3());
-			prep.setDouble(15, producto.getBon4());
-			prep.setDouble(16, producto.getFlete());
-			prep.setDouble(17, producto.getGanancia());
+				String sql = "INSERT INTO `db-sistema`.CAT_PRODUCTOS (ID_PROD, NOM_PROD, ID_PROVEEDOR_PROD, STOCK_PROD, FOTO_PROD,PRECIO_COMPRA_PROD, PRECIO_VENTA_PROD, EXISTENCIA_PROD,ID_PROVEEDOR,ID_CATEGORIA,IVA,BON1,BON2,BON3,BON4,FLETE,GANANCIA) "
+						+ "VALUES(?,?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?)";
 
-			prep.execute();
+				prep = Conexion.prepareStatement(sql);
+				prep.setString(1, producto.getIdProducto());
+				prep.setString(2, producto.getNomProducto());
+				prep.setString(3, producto.getIdProveedorProducto());
+				prep.setDouble(4, producto.getStockProducto());
+				prep.setBlob(5, fis);
+				prep.setDouble(6, producto.getPrecioCompraProducto());
+				prep.setDouble(7, producto.getPrecioVentaProducto());
+				prep.setDouble(8, producto.getExistenciasProducto());
+				prep.setInt(9, producto.getIdProveedor());
+				prep.setInt(10, producto.getIdCategoria());
+				prep.setDouble(11, producto.getIva());
+				prep.setDouble(12, producto.getBon1());
+				prep.setDouble(13, producto.getBon2());
+				prep.setDouble(14, producto.getBon3());
+				prep.setDouble(15, producto.getBon4());
+				prep.setDouble(16, producto.getFlete());
+				prep.setDouble(17, producto.getGanancia());
+
+				prep.execute();
+			} else {
+
+				String sql = "INSERT INTO `db-sistema`.CAT_PRODUCTOS (ID_PROD, NOM_PROD, ID_PROVEEDOR_PROD, STOCK_PROD, FOTO_PROD,PRECIO_COMPRA_PROD, PRECIO_VENTA_PROD, EXISTENCIA_PROD,ID_PROVEEDOR,ID_CATEGORIA,IVA,BON1,BON2,BON3,BON4,FLETE,GANANCIA) "
+						+ "VALUES(?,?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?)";
+
+				prep = Conexion.prepareStatement(sql);
+				prep.setString(1, producto.getIdProducto());
+				prep.setString(2, producto.getNomProducto());
+				prep.setString(3, producto.getIdProveedorProducto());
+				prep.setDouble(4, producto.getStockProducto());
+				prep.setString(5, null);
+				prep.setDouble(6, producto.getPrecioCompraProducto());
+				prep.setDouble(7, producto.getPrecioVentaProducto());
+				prep.setDouble(8, producto.getExistenciasProducto());
+				prep.setInt(9, producto.getIdProveedor());
+				prep.setInt(10, producto.getIdCategoria());
+				prep.setDouble(11, producto.getIva());
+				prep.setDouble(12, producto.getBon1());
+				prep.setDouble(13, producto.getBon2());
+				prep.setDouble(14, producto.getBon3());
+				prep.setDouble(15, producto.getBon4());
+				prep.setDouble(16, producto.getFlete());
+				prep.setDouble(17, producto.getGanancia());
+
+				prep.execute();
+			}
 
 		} catch (SQLException | FileNotFoundException ex) {
 
@@ -367,8 +398,9 @@ public class Controlador {
 				double flete = rs.getDouble("FLETE");
 				double ganancia = rs.getDouble("GANANCIA");
 
-				Producto producto = new Producto(idProducto,idprod, nomprod, stock, idProveedorProd, precioCompra, precioVenta,
-						existencia, idCategoria, idProveedor, iva, bon1, bon2, bon3, bon4, flete, ganancia);
+				Producto producto = new Producto(idProducto, idprod, nomprod, stock, idProveedorProd, precioCompra,
+						precioVenta, existencia, idCategoria, idProveedor, iva, bon1, bon2, bon3, bon4, flete,
+						ganancia);
 				listaProductos.add(producto);
 
 			}
@@ -558,7 +590,6 @@ public class Controlador {
 
 	// INSERTAR PRESUPUESTO
 ////////////////////////////////METODO PARA INSERTAR LA VENTA
-////////////////////////////////METODO PARA INSERTAR LA VENTA
 	public Long insertarVenta(Ventas venta) {
 		Long LastVal = 0l;
 		try {
@@ -642,8 +673,75 @@ public class Controlador {
 		return proveedor;
 
 	}
-	
-	
+
+	public Vector<Proveedor> dameProveedoresTabla() {
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Conexion conn = new Conexion();
+		Connection con = conn.getConexion();
+
+		Vector<Proveedor> proveedor = new Vector<Proveedor>();
+
+		Proveedor prov = null;
+
+		try {
+
+			String sql = "SELECT * FROM `db-sistema`.CAT_PROVEEDORES";
+
+			ps = con.prepareStatement(sql);
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				prov = new Proveedor();
+				prov.setIdProveedor(rs.getInt("ID_PROVEEDOR"));
+				prov.setNomProveedor(rs.getString("NOM_PROVEEDOR"));
+				prov.setDirProveedor(rs.getString("DIR_PROVEEDOR"));
+				prov.setTelProveedor(rs.getString("TEL_PROVEEDOR"));
+				prov.setMailProveedor(rs.getString("EMAIL_PROVEEDOR"));
+				proveedor.add(prov);
+			}
+
+			rs.close();
+
+		} catch (Exception e) {
+			System.err.print(e.toString());
+		}
+		// devuelve el vector
+		System.out.println(proveedor);
+		return proveedor;
+
+	}
+
+//LISTA LOS PRODUCTOS POR NOMBRE DE PROVEEDOR
+	public ArrayList<Productos> dameProductos(int id) {
+		ArrayList<Productos> productos = new ArrayList<Productos>();
+		Productos prod = null;
+		try {
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			Conexion conn = new Conexion();
+			Connection con = conn.getConexion();
+			String sql = "SELECT ID_PROD, NOM_PROD, NOM_CATEGORIA,  STOCK_PROD FROM CAT_PRODUCTOS "
+					+ "INNER JOIN  CAT_PROVEEDORES ON CAT_PRODUCTOS.ID_PROVEEDOR = CAT_PROVEEDORES.ID_PROVEEDOR"
+					+ " INNER JOIN CAT_CATEGORIA ON CAT_PRODUCTOS.ID_CATEGORIA WHERE CAT_PROVEEDORES.ID_PROVEEDOR  ="+id;
+			ps = con.prepareStatement(sql);
+			rs = ps.executeQuery();
+			
+			while (rs.next()) {
+				prod = new Productos();
+				prod.setId_prod(rs.getString("ID_PROD"));
+				prod.setDescripcion(rs.getString("NOM_PROD"));
+				prod.setNom_proveedor(rs.getString("NOM_CATEGORIA"));
+				prod.setStock(rs.getDouble("STOCK_PROD"));
+				productos.add(prod);
+			}
+			rs.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return productos;
+	}
 
 //METODO QUE SELECCIONA LOS PROVEEDORES DE LA BASE DE DATOS.
 	public Vector<Categoria> dameCategorias(Integer idProveedor) {
@@ -680,8 +778,8 @@ public class Controlador {
 		} catch (Exception e) {
 			System.err.print(e.toString());
 		}
-		// devuelve el vector
-		System.out.println(categoria);
+
+
 		return categoria;
 
 	}
@@ -720,8 +818,7 @@ public class Controlador {
 		} catch (Exception e) {
 			System.err.print(e.toString());
 		}
-		// devuelve el vector
-		System.out.println(categoria);
+
 		return categoria;
 
 	}
@@ -785,10 +882,10 @@ public class Controlador {
 				double flete = rs.getDouble("FLETE");
 				double ganancia = rs.getDouble("GANANCIA");
 
-				Producto producto = new Producto(idProducto,idprod, nomprod, stock, idCodigoProve, precioCompra, precioVenta,
-						existencia, categoria, idProvee, iva, bon1, bon2, bon3, bon4, flete, ganancia);
+				Producto producto = new Producto(idProducto, idprod, nomprod, stock, idCodigoProve, precioCompra,
+						precioVenta, existencia, categoria, idProvee, iva, bon1, bon2, bon3, bon4, flete, ganancia);
 				listaProductos.add(producto);
-				System.out.println(listaProductos.add(producto));
+				
 
 			}
 
@@ -832,8 +929,8 @@ public class Controlador {
 				double flete = rs.getDouble("FLETE");
 				double ganancia = rs.getDouble("GANANCIA");
 
-				Producto producto = new Producto(idProducto,idprod, nomprod, stock, idCodigoProve, precioCompra, precioVenta,
-						existencia, categoria, idProvee, iva, bon1, bon2, bon3, bon4, flete, ganancia);
+				Producto producto = new Producto(idProducto, idprod, nomprod, stock, idCodigoProve, precioCompra,
+						precioVenta, existencia, categoria, idProvee, iva, bon1, bon2, bon3, bon4, flete, ganancia);
 				listaProductos.add(producto);
 
 			}
@@ -877,8 +974,8 @@ public class Controlador {
 				double ganancia = rs.getInt("GANANCIA");
 				String codigoArticulo = rs.getString("CODIGO_ARTICULO");
 
-				Producto producto = new Producto(idProducto,idprod, nomprod, stock, idCodigoProve, precioCompra, precioVenta,
-						existencia, categoria, idProvee, iva, bon1, bon2, bon3, bon4, flete, ganancia);
+				Producto producto = new Producto(idProducto, idprod, nomprod, stock, idCodigoProve, precioCompra,
+						precioVenta, existencia, categoria, idProvee, iva, bon1, bon2, bon3, bon4, flete, ganancia);
 				listaProductos.add(producto);
 
 			}
@@ -931,8 +1028,8 @@ public class Controlador {
 				double flete = rs.getDouble("FLETE");
 				double ganancia = rs.getDouble("GANANCIA");
 
-				Producto producto = new Producto(idProducto,idprod, nomprod, stock, idCodigoProve, precioCompra, precioVenta,
-						existencia, categoria, idProvee, iva, bon1, bon2, bon3, bon4, flete, ganancia);
+				Producto producto = new Producto(idProducto, idprod, nomprod, stock, idCodigoProve, precioCompra,
+						precioVenta, existencia, categoria, idProvee, iva, bon1, bon2, bon3, bon4, flete, ganancia);
 				listaProductos.add(producto);
 
 			}
@@ -986,8 +1083,8 @@ public class Controlador {
 
 		try {
 
-			prep = Conexion.prepareStatement("DELETE FROM `db-sistema`.CAT_PRODUCTOS WHERE ID_PROD=?");
-			prep.setString(1, producto.getIdProducto());
+			prep = Conexion.prepareStatement("DELETE FROM `db-sistema`.CAT_PRODUCTOS WHERE ID_PRODUCTO=?");
+			prep.setInt(1, producto.getIdProducto1());
 			prep.executeQuery();
 
 		} catch (SQLException ex) {
@@ -1001,10 +1098,10 @@ public class Controlador {
 		InputStream streamFoto = null;
 		try {
 
-			String sql = "SELECT FOTO_PROD FROM `db-sistema`.CAT_PRODUCTOS WHERE ID_PROD=?";
+			String sql = "SELECT FOTO_PROD FROM `db-sistema`.CAT_PRODUCTOS WHERE ID_PRODUCTO=?";
 
 			prep = Conexion.prepareStatement(sql);
-			prep.setString(1, producto.getIdProducto());
+			prep.setInt(1, producto.getIdProducto1());
 
 			rs = prep.executeQuery();
 
