@@ -160,6 +160,11 @@ public class LaminaPrincipal extends JPanel {
 		add(comboBoxCategoria);
 
 		comboBoxProveedores = new JComboBox();
+		comboBoxProveedores.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			
+			}
+		});
 		comboBoxProveedores.setBounds(197, 290, 178, 24);
 		cargarModeloProv();
 		add(comboBoxProveedores);
@@ -486,44 +491,7 @@ public class LaminaPrincipal extends JPanel {
 		btnAñadir_2.setBounds(665, 278, 104, 50);
 		add(btnAñadir_2);
 
-		// Obtiene los valores de la tabla con el click
-		tablaProductos.setIntercellSpacing(new java.awt.Dimension(4, 4));
-		tablaProductos.setRowHeight(25);
-		tablaProductos.setModel(modeloTabla);
-		tablaProductos.getSelectionModel().addListSelectionListener(
-
-				new ListSelectionListener() {
-
-					public void valueChanged(ListSelectionEvent event) {
-
-						if (!event.getValueIsAdjusting() && (tablaProductos.getSelectedRow() >= 0)) {
-
-							Producto producto = (Producto) modeloTabla.getValueAt(tablaProductos.getSelectedRow(), 1);
-
-							txtIdProducto.setText(String.valueOf(producto.getIdProducto()));
-							txtNombre.setText(producto.getNomProducto().toUpperCase());
-							campoStock.setText(String.valueOf(producto.getStockProducto()));
-							txtPrecioVenta.setText(String.valueOf(producto.getPrecioVentaProducto()));
-							txtCosto.setText(String.valueOf(producto.getPrecioCompraProducto()));
-							txtClaveProveedor.setText(producto.getIdProveedorProducto());
-							txtIva.setText(String.valueOf(producto.getIva()));
-							txtbon1.setText(String.valueOf(producto.getBon1()));
-							txtbon2.setText(String.valueOf(producto.getBon2()));
-							txtbon3.setText(String.valueOf(producto.getBon3()));
-							txtbon4.setText(String.valueOf(producto.getBon4()));
-							txtFlete.setText(String.valueOf(producto.getFlete()));
-							txtGanancia.setText(String.valueOf(producto.getGanancia()));
-							txtCategoria.setText(String.valueOf(comboBoxCategoria.getSelectedItem()));
-							txtProveedores.setText(String.valueOf(comboBoxProveedores.getSelectedItem()));
-							
-							
-							
-							desplegarFoto(producto);
-							productoSeleccionado = producto;
-						}
-					}
-
-				});
+	
 
 	}
 
@@ -737,7 +705,7 @@ public class LaminaPrincipal extends JPanel {
 				if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
 					LimpiarLista();
 
-					int cadena = Integer.parseInt(campoBuscarTodo.getText());
+					String cadena =campoBuscarTodo.getText();
 
 					ArrayList<Producto> listaProductos = base.obtenerProductosPorCodigo(cadena);
 
@@ -968,7 +936,7 @@ public class LaminaPrincipal extends JPanel {
 	}
 
 	// MODIFICA EL PRODUCTO SELECCIONADO.
-	private void actualizarArticulo() {
+private void actualizarArticulo() {
 
 		try {
 			int idProducto = Integer.parseInt(txtIdProduct.getText());

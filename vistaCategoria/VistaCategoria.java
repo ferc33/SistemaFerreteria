@@ -10,22 +10,28 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controlador.Controlador;
+import modelo.Categoria;
 import modelo.Proveedor;
 
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 public class VistaCategoria extends JDialog {
 
 	private DefaultComboBoxModel modeloCategoria=null;
 	private Controlador base = new Controlador();
 	private final JPanel contentPanel = new JPanel();
-	private JTextField textField;
+	private JTextField txtCategoria;
 	private JComboBox comboBoxProveedores;
+	private JTable table;
 	/**
 	 * Launch the application.
 	 */
@@ -47,10 +53,10 @@ public void initComponent() {
 		contentPanel.add(panel);
 		panel.setLayout(null);
 		
-		textField = new JTextField();
-		textField.setBounds(84, 12, 159, 33);
-		panel.add(textField);
-		textField.setColumns(10);
+		txtCategoria = new JTextField();
+		txtCategoria.setBounds(84, 12, 159, 33);
+		panel.add(txtCategoria);
+		txtCategoria.setColumns(10);
 		
 		 comboBoxProveedores = new JComboBox();
 		comboBoxProveedores.setBounds(263, 12, 198, 33);
@@ -65,6 +71,12 @@ public void initComponent() {
 		panel.add(panel_1);
 		{
 			JButton btnGuardar = new JButton("Guardar");
+			btnGuardar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+			
+							insertarCategoriaActionPerformed(e);
+				}
+			});
 			panel_1.add(btnGuardar);
 			btnGuardar.setActionCommand("OK");
 			getRootPane().setDefaultButton(btnGuardar);
@@ -85,6 +97,14 @@ public void initComponent() {
 	
 	JPanel panel = new JPanel();
 	contentPanel.add(panel);
+	panel.setLayout(null);
+	
+	JScrollPane scrollPane = new JScrollPane();
+	scrollPane.setBounds(0, 12, 499, 101);
+	panel.add(scrollPane);
+	
+	table = new JTable();
+	scrollPane.setViewportView(table);
 	{
 		JPanel buttonPane = new JPanel();
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -108,6 +128,21 @@ public void initComponent() {
 		 modeloCategoria = new DefaultComboBoxModel(base.dameProveedores());
 		comboBoxProveedores.setModel(modeloCategoria);
 
+	}
+	
+	private void insertarCategoriaActionPerformed(ActionEvent e){
+		
+		Proveedor idProveedor =(Proveedor)comboBoxProveedores.getSelectedItem();
+		
+		String nomCategoria = txtCategoria.getText();
+		
+		Categoria categoria = new Categoria (nomCategoria,idProveedor.getIdProveedor());
+		
+		base.insertarCategoriaProducto(categoria);
+		
+		dispose();
+		
+		
 	}
 	
 }

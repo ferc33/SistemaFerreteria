@@ -650,7 +650,7 @@ public class vistaFrame extends javax.swing.JFrame {
              }
 
              if (radioPresupuesto.isSelected()) {
-                 insertarPresupuesto();
+                // insertarPresupuesto();
              }
 
 
@@ -993,8 +993,7 @@ public class vistaFrame extends javax.swing.JFrame {
          lblSumatoria.setText("0.00");
 
      }
-        
-    
+  
 //INSERTAR PRESUPUESTO.
     public void insertarPresupuesto() {
         String txtPresu = txtPresupuesto.getText();

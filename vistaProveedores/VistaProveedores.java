@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.ItemSelectable;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
@@ -21,29 +24,33 @@ import org.apache.poi.util.SystemOutLogger;
 import controlador.Controlador;
 import modelo.Categoria;
 import modelo.Conexion;
-import modelo.Producto;
 import modelo.Proveedor;
 import modelo.innerjoin.Productos;
-import vistaInventario.MarcoArticulo;
-
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import javax.swing.JTable;
-import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemListener;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.awt.event.ItemEvent;
 import java.awt.GridLayout;
+import javax.swing.JTabbedPane;
+import javax.swing.JLayeredPane;
+import javax.swing.JToolBar;
 
 public class VistaProveedores extends JDialog {
+	private Connection conn = null;
 	private JTextField txtNombre;
 	private JTextField txtTel;
 	private JTextField txtEmail;
@@ -56,6 +63,7 @@ public class VistaProveedores extends JDialog {
 	private JComboBox comboBoxCategorias;
 	private JScrollPane scrollPane;
 	private JTable tablaProveedores;
+	private Conexion con;
 	private DefaultTableModel modeloTablaProveedores = new DefaultTableModel();
 	private DefaultTableModel modeloTabla = new DefaultTableModel() {
 		@Override
@@ -77,6 +85,7 @@ public class VistaProveedores extends JDialog {
 
 	public void initComponent() {
 
+		con = new Conexion();
 		JPanel panel = new JPanel();
 		panel.setBounds(12, 0, 676, 555);
 		getContentPane().add(panel);
@@ -140,7 +149,7 @@ public class VistaProveedores extends JDialog {
 		panel_1.add(lblProveedor);
 
 		JLabel lblCategorias = new JLabel("Rubro");
-		lblCategorias.setBounds(499, 41, 82, 17);
+		lblCategorias.setBounds(499, 41, 46, 17);
 		panel_1.add(lblCategorias);
 
 		comboBoxCategorias = new JComboBox();
@@ -162,6 +171,16 @@ public class VistaProveedores extends JDialog {
 		});
 		btnListar.setBounds(597, 7, 68, 27);
 		panel_1.add(btnListar);
+
+		JButton btnProductosPdf = new JButton("Imprimir");
+		btnProductosPdf.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				dameProductoPorCategoria(e);
+			}
+		});
+		btnProductosPdf.setBounds(544, 36, 121, 27);
+		panel_1.add(btnProductosPdf);
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBounds(0, 145, 677, 318);
@@ -352,6 +371,25 @@ public class VistaProveedores extends JDialog {
 			modeloTabla.setValueAt(nom, i, 2);
 			modeloTabla.setValueAt(stock, i, 3);
 
+		}
+	}
+
+	private void dameProductoPorCategoria(ActionEvent e) {
+		try {
+			String path = "/home/ferc/JaspersoftWorkspace/SistemaFereteria/Producto.jasper";
+			conn = con.getConexion();
+			Map parametros = new HashMap();
+			Categoria categoria = (Categoria) comboBoxCategorias.getSelectedItem();
+			int c = categoria.getIdCategoria();
+			System.out.println(c);
+			parametros.put("idCategoria", c);
+			JasperReport reporte = (JasperReport) JRLoader.loadObjectFromFile(path);
+			JasperPrint jprint = JasperFillManager.fillReport(reporte, parametros, conn);
+			JasperViewer view = new JasperViewer(jprint, false);
+			view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			view.setVisible(true);
+		} catch (Exception es) {
+			es.printStackTrace();
 		}
 
 	}

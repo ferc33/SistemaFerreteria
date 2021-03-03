@@ -16,8 +16,10 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -35,6 +37,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -47,13 +50,13 @@ import modelo.Conexion;
 import modelo.Producto;
 import modelo.Proveedor;
 import vistaCategoria.VistaCategoria;
-import vistaDolar.vistaDolar;
+import vistaDolar.VistaDolar;
 import vistaProveedores.VistaProveedores;
 import javax.swing.SwingConstants;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class MarcoArticulo extends JFrame {
-
-	private 	JLabel lblmsj ;
 	private JPanel laminaP;
 	private JTextField textField;
 	private JTextField txtCosto;
@@ -133,7 +136,7 @@ public class MarcoArticulo extends JFrame {
 		
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 985, 532);
+		
 		laminaP = new JPanel();
 		laminaP.setBorder(new EmptyBorder(5, 5, 5, 5));
 		laminaP.setLayout(new BorderLayout(0, 0));
@@ -143,9 +146,10 @@ public class MarcoArticulo extends JFrame {
 		cargarColumnas();
 		cargarModeloTabla();
 
-		setSize(900, 570);
+		setSize(1000, 670);
 
 		JButton btnProveedor = new JButton();
+		btnProveedor.setIcon(new ImageIcon("/home/ferc/Descargas/agent.png"));
 		btnProveedor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				 
@@ -157,10 +161,8 @@ public class MarcoArticulo extends JFrame {
 			
 			}
 		});
-		
-		btnProveedor.setText("Proveedor");
 		btnProveedor.setFont(new Font("Comfortaa", Font.PLAIN, 12));
-		btnProveedor.setBounds(786, 1, 113, 99);
+		btnProveedor.setBounds(875, 53, 55, 50);
 		getContentPane().add(btnProveedor);
 
 		JButton btnCategoria = new JButton();
@@ -177,50 +179,80 @@ public class MarcoArticulo extends JFrame {
 		});
 		btnCategoria.setText("Categoria");
 		btnCategoria.setFont(new Font("Comfortaa", Font.PLAIN, 12));
-		btnCategoria.setBounds(786, 112, 113, 99);
+		btnCategoria.setBounds(875, 112, 113, 99);
 		getContentPane().add(btnCategoria);
 
 		JButton jButton1 = new JButton();
 		jButton1.setText("Actualizar Listas");
 		jButton1.setFont(new Font("Decker", Font.PLAIN, 14));
-		jButton1.setBounds(786, 334, 113, 99);
+		jButton1.setBounds(875, 370, 113, 99);
 		getContentPane().add(jButton1);
 
 		JButton btnListarPorProveedor = new JButton();
 		btnListarPorProveedor.setText("Stock");
-		btnListarPorProveedor.setBounds(786, 223, 113, 99);
+		btnListarPorProveedor.setBounds(875, 231, 113, 99);
 		getContentPane().add(btnListarPorProveedor);
 
 		JButton Exit = new JButton();
 		Exit.setText("Eliminar");
 		Exit.setFont(new Font("Decker", Font.PLAIN, 14));
-		Exit.setBounds(786, 445, 113, 99);
+		Exit.setBounds(875, 513, 113, 99);
 		getContentPane().add(Exit);
 
 		JLabel lblCosto_6_1 = new JLabel("Codigo Art");
 		lblCosto_6_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCosto_6_1.setBounds(250, 36, 125, 35);
 		getContentPane().add(lblCosto_6_1);
-
+		
 		comboBoxCategoria = new JComboBox();
-		comboBoxCategoria.setBounds(10, 289, 240, 24);
-		cargarModeloCat();
+		comboBoxCategoria.setBounds(33, 324, 240, 50);
+	
 		getContentPane().add(comboBoxCategoria);
 
+		//Titled borders
+		TitledBorder title;
+		title = BorderFactory.createTitledBorder("Rubro");
+		comboBoxCategoria.setBorder(title);
+		
 		comboBoxProveedores = new JComboBox();
-		comboBoxProveedores.setBounds(256, 289, 244, 24);
+		
+		
+		comboBoxProveedores.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+			
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+
+					Proveedor prove = (Proveedor) comboBoxProveedores.getSelectedItem();
+					// GUARDAMOS LO QUE OBTENEMOS DE LA BASE DE DATOS EN UN MODELO
+					DefaultComboBoxModel modCategoria = new DefaultComboBoxModel(base.dameCategorias(prove.getIdProveedor()));
+					// MOSTRAMOS EL MODELO EN EL COMBOBOX
+					comboBoxCategoria.setModel(modCategoria);
+				}
+			
+			}
+		});
+		
+		comboBoxProveedores.setBounds(279, 324, 244, 50);
 		cargarModeloProv();
 		getContentPane().add(comboBoxProveedores);
 		
+		TitledBorder title2;
+		title2 = BorderFactory.createTitledBorder("Proveedores");
+		comboBoxProveedores.setBorder(title2);
 		txtIdProduct = new JTextField();
-		txtIdProduct.setBounds(518, 362, 114, 21);
+		txtIdProduct.setBounds(681, 422, 114, 21);
 		getContentPane().add(txtIdProduct);
 		txtIdProduct.setColumns(10);
 		
-		lblmsj = new JLabel("");		
-		lblmsj.setHorizontalAlignment(SwingConstants.CENTER);
-		lblmsj.setBounds(284, 243, 216, 35);
-		getContentPane().add(lblmsj);
+		txtProveedor = new JTextField();
+		txtProveedor.setBounds(288, 289, 234, 26);
+		getContentPane().add(txtProveedor);
+		txtProveedor.setColumns(10);
+		
+		txtCategoria = new JTextField();
+		txtCategoria.setColumns(10);
+		txtCategoria.setBounds(32, 290, 234, 26);
+		getContentPane().add(txtCategoria);
 		txtIdProduct.setVisible(false);
 	}
 	
@@ -435,7 +467,7 @@ public class MarcoArticulo extends JFrame {
 			});
 			btnEliminar.setIcon(new ImageIcon(LaminaPrincipal.class.getResource("/Iconos_Imagenes/SALIR_ROJO.png")));
 			btnEliminar.setFont(new Font("Comfortaa", Font.PLAIN, 12));
-			btnEliminar.setBounds(703, 1, 66, 50);
+			btnEliminar.setBounds(758, -5, 66, 50);
 			getContentPane().add(btnEliminar);
 
 			btnUpdate = new JButton();
@@ -447,7 +479,7 @@ public class MarcoArticulo extends JFrame {
 				}
 			});
 			btnUpdate.setFont(new Font("Comfortaa", Font.PLAIN, 12));
-			btnUpdate.setBounds(615, 1, 66, 50);
+			btnUpdate.setBounds(670, -5, 66, 50);
 			getContentPane().add(btnUpdate);
 
 			btnAñadir = new JButton();
@@ -461,7 +493,7 @@ public class MarcoArticulo extends JFrame {
 
 			});
 			btnAñadir.setFont(new Font("Comfortaa", Font.PLAIN, 12));
-			btnAñadir.setBounds(527, 1, 66, 50);
+			btnAñadir.setBounds(582, -5, 66, 50);
 			getContentPane().add(btnAñadir);
 
 			txtNombre = new JTextField();
@@ -486,6 +518,12 @@ public class MarcoArticulo extends JFrame {
 			getContentPane().add(lblProducto);
 
 			txtClaveProveedor = new JTextField();
+			txtClaveProveedor.addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyPressed(KeyEvent e) {
+					txtClaveProveedorKeyPressed(e);
+				}
+			});
 			txtClaveProveedor.setHorizontalAlignment(SwingConstants.CENTER);
 			txtClaveProveedor.setText("0.0");
 		
@@ -495,24 +533,24 @@ public class MarcoArticulo extends JFrame {
 
 			campoBuscarTodo = new JTextField();
 			campoBuscarTodo.setColumns(10);
-			campoBuscarTodo.setBounds(10, 327, 378, 26);
+			campoBuscarTodo.setBounds(32, 386, 378, 26);
 			getContentPane().add(campoBuscarTodo);
 
 			grupo_botones = new ButtonGroup();
 
 			JRadioButton buttonDesc = new JRadioButton();
 			buttonDesc.setText("Descripcion (F1)");
-			buttonDesc.setBounds(0, 361, 137, 23);
+			buttonDesc.setBounds(20, 420, 137, 23);
 			getContentPane().add(buttonDesc);
 
 			JRadioButton buttonCodigo = new JRadioButton();
 			buttonCodigo.setText("Codigo (F2)");
-			buttonCodigo.setBounds(152, 361, 104, 23);
+			buttonCodigo.setBounds(172, 420, 104, 23);
 			getContentPane().add(buttonCodigo);
 
 			JRadioButton buttonProve = new JRadioButton();
 			buttonProve.setText("Codigo Prov (F3)");
-			buttonProve.setBounds(268, 361, 139, 23);
+			buttonProve.setBounds(288, 420, 139, 23);
 			getContentPane().add(buttonProve);
 
 			JButton btnLimpiarCampos = new JButton();
@@ -523,11 +561,11 @@ public class MarcoArticulo extends JFrame {
 				}
 			});
 			btnLimpiarCampos.setText("Limpiar");
-			btnLimpiarCampos.setBounds(388, 326, 113, 27);
+			btnLimpiarCampos.setBounds(410, 385, 113, 27);
 			getContentPane().add(btnLimpiarCampos);
 
 			JPanel panel = new JPanel();
-			panel.setBounds(10, 392, 764, 130);
+			panel.setBounds(10, 451, 853, 179);
 			getContentPane().add(panel);
 			panel.setLayout(new BorderLayout(100, 0));
 
@@ -539,7 +577,7 @@ public class MarcoArticulo extends JFrame {
 
 			panel_1 = new JPanel();
 			panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
-			panel_1.setBounds(519, 57, 250, 209);
+			panel_1.setBounds(534, 57, 329, 290);
 			getContentPane().add(panel_1);
 			panel_1.setLayout(new BorderLayout(0, 0));
 
@@ -557,13 +595,13 @@ public class MarcoArticulo extends JFrame {
 			});
 			btnImportar.setText("Importar");
 			btnImportar.setFont(new Font("Comfortaa", Font.PLAIN, 12));
-			btnImportar.setBounds(527, 277, 105, 50);
+			btnImportar.setBounds(553, 359, 105, 50);
 			getContentPane().add(btnImportar);
 
 			btnAñadir_2 = new JButton();
 			btnAñadir_2.setText("Guardar");
 			btnAñadir_2.setFont(new Font("Comfortaa", Font.PLAIN, 12));
-			btnAñadir_2.setBounds(665, 278, 104, 50);
+			btnAñadir_2.setBounds(691, 360, 104, 50);
 			getContentPane().add(btnAñadir_2);
 
 			// Obtiene los valores de la tabla con el click
@@ -579,6 +617,7 @@ public class MarcoArticulo extends JFrame {
 							if (!event.getValueIsAdjusting() && (tablaProductos.getSelectedRow() >= 0)) {
 
 								Producto producto = (Producto) modeloTabla.getValueAt(tablaProductos.getSelectedRow(), 1);
+														
 								txtIdProduct.setText(String.valueOf(producto.getIdProducto1()));
 								txtIdProducto.setText(String.valueOf(producto.getIdProducto()));
 								txtNombre.setText(producto.getNomProducto().toUpperCase());
@@ -592,13 +631,16 @@ public class MarcoArticulo extends JFrame {
 								txtbon3.setText(String.valueOf(producto.getBon3()));
 								txtbon4.setText(String.valueOf(producto.getBon4()));
 								txtFlete.setText(String.valueOf(producto.getFlete()));
-								txtGanancia.setText(String.valueOf(producto.getGanancia()));
-								int categoria = Integer.valueOf(producto.getIdCategoria());
-								int proveedor = Integer.valueOf(producto.getIdProveedor());
+								txtGanancia.setText(String.valueOf(producto.getGanancia()));		
+								txtProveedor.setText(String.valueOf(producto.getNomProveedor()));
+								txtCategoria.setText(String.valueOf(producto.getNomCategoria()));	
+								txtProveedor.setEnabled(false);
+								txtCategoria.setEnabled(false);
+							
 								
-								comboBoxCategoria.setSelectedIndex(categoria);
-								comboBoxProveedores.setSelectedIndex(proveedor);
-								
+								comboBoxProveedores.setSelectedItem(producto.getNomProveedor());
+								comboBoxCategoria.setSelectedItem(producto.getNomCategoria());
+
 								desplegarFoto(producto);
 								productoSeleccionado = producto;
 							}
@@ -607,8 +649,6 @@ public class MarcoArticulo extends JFrame {
 					});
 
 		}
-		
-		
 		
 		
 		public void desplegarFoto(Producto prod) {
@@ -673,18 +713,22 @@ public class MarcoArticulo extends JFrame {
 			modeloTabla.addColumn("c.prov");
 			modeloTabla.addColumn("venta");
 			modeloTabla.addColumn("stock");
+			modeloTabla.addColumn("Categoria");
+			modeloTabla.addColumn("Proveedor");
 
 			TableColumn ColCodigo = tablaProductos.getColumn("codigo");
 			TableColumn ColNombre = tablaProductos.getColumn("nombre");
 			TableColumn ColProve = tablaProductos.getColumn("c.prov");
 			TableColumn Colcant = tablaProductos.getColumn("venta");
 			TableColumn ColVen = tablaProductos.getColumn("stock");
+			TableColumn ColCat = tablaProductos.getColumn("Categoria");
+			TableColumn ColPro = tablaProductos.getColumn("Proveedor");
 
 			ColCodigo.setMaxWidth(80);
 			ColCodigo.setMinWidth(10);
 
-			ColNombre.setMinWidth(300);
-			ColNombre.setMaxWidth(500);
+			ColNombre.setMinWidth(200);
+			ColNombre.setMaxWidth(350);
 
 			ColProve.setMaxWidth(150);
 			ColProve.setMinWidth(50);
@@ -694,6 +738,12 @@ public class MarcoArticulo extends JFrame {
 
 			ColVen.setMaxWidth(80);
 			ColVen.setMinWidth(10);
+			
+			ColCat.setMaxWidth(100);
+			ColCat.setMinWidth(10);
+			
+			ColPro.setMaxWidth(100);
+			ColPro.setMinWidth(10);
 
 		}
 
@@ -726,6 +776,8 @@ public class MarcoArticulo extends JFrame {
 		private JLabel imgLabel;
 		private JComboBox comboBoxCategoria_1;
 		private JTextField txtIdProduct;
+		private JTextField txtProveedor;
+		private JTextField txtCategoria;
 	
 
 		public void cargarModeloTabla() {
@@ -742,16 +794,22 @@ public class MarcoArticulo extends JFrame {
 				String idFabricaProd = producto.getIdProveedorProducto();
 				Double pventa = producto.getPrecioVentaProducto();
 				int exis = producto.getStockProducto();
+				String nomProveedor = producto.getNomProveedor();
+				String nomCategoria = producto.getNomCategoria();
 
 				modeloTabla.setValueAt(idClave, i, 0);
 				modeloTabla.setValueAt(producto, i, 1);
 				modeloTabla.setValueAt(idFabricaProd, i, 2);
 				modeloTabla.setValueAt(pventa, i, 3);
 				modeloTabla.setValueAt(exis, i, 4);
+				modeloTabla.setValueAt(nomCategoria, i, 5);
+				modeloTabla.setValueAt(nomProveedor, i, 6);
 
 			}
 
 		}
+		
+		
 
 		private void LimpiarLista() {
 			int numFilas = modeloTabla.getRowCount();
@@ -829,7 +887,7 @@ public class MarcoArticulo extends JFrame {
 					if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
 						LimpiarLista();
 
-						int cadena = Integer.parseInt(campoBuscarTodo.getText());
+						String cadena =campoBuscarTodo.getText();
 
 						ArrayList<Producto> listaProductos = base.obtenerProductosPorCodigo(cadena);
 
@@ -864,9 +922,7 @@ public class MarcoArticulo extends JFrame {
 
 					String cadena = campoBuscarTodo.getText();
 
-					if (cadena.isEmpty()) {
-						System.out.println("PEDERNA");
-					}
+				
 
 					LimpiarLista();
 
@@ -938,13 +994,15 @@ public class MarcoArticulo extends JFrame {
 				double bon4 = Double.parseDouble(txtbon4.getText());
 				double flete = Double.parseDouble(txtFlete.getText());
 				double ganancia = Double.parseDouble(txtGanancia.getText());
-				int idc = comboBoxCategoria.getSelectedIndex();
-				int idp = comboBoxProveedores.getSelectedIndex();
+				
+				Categoria cat  = (Categoria)comboBoxCategoria.getSelectedItem();
+				Proveedor pro = (Proveedor)comboBoxProveedores.getSelectedItem();
+			
 
 				if (imgArticleFile == null) {
 
 					Producto producto = new Producto(idprod, nombre, stock, codigoProveedor, null, pCosto, pVenta, pDolar,
-							0, idc, idp, iva, bon1, bon2, bon3, bon4, flete, ganancia);
+							0, cat.getIdCategoria(), pro.getIdProveedor(), iva, bon1, bon2, bon3, bon4, flete, ganancia);
 
 					base.insertarProducto(producto);
 
@@ -955,7 +1013,7 @@ public class MarcoArticulo extends JFrame {
 				} else {
 
 					Producto producto = new Producto(idprod, nombre, stock, codigoProveedor, imgArticleFile, pCosto, pVenta,
-							pDolar, 0, idc, idp, iva, bon1, bon2, bon3, bon4, flete, ganancia);
+							pDolar, 0, cat.getIdCategoria(),  pro.getIdProveedor(), iva, bon1, bon2, bon3, bon4, flete, ganancia);
 					base.insertarProducto(producto);
 
 					JOptionPane.showMessageDialog(this,
@@ -1215,7 +1273,8 @@ public class MarcoArticulo extends JFrame {
 			hacerFoco(evt, txtGanancia, txtPrecioVenta);
 		}
 
-		public void actionPerformed(ActionEvent e) {
+		private void txtClaveProveedorKeyPressed(KeyEvent e) {
+					hacerFoco(e,txtIdProducto,txtCosto);
 		}
 	}
 	

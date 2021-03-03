@@ -5,16 +5,59 @@ public class Productos {
 	 private String id_prod;
 	 private String descripcion;
 	 private String cod_proveedor;
-	 private String nom_proveedor;
+	 private Double pVenta;
 	 private Double Stock;
-	public Productos(String id_prod, String descripcion, String cod_proveedor, String nom_proveedor, Double stock) {
+	 private String nom_categoria;
+	 private String nom_proveedor;
+	
+	 
+	 
+	public Productos(String id_prod, String descripcion, String cod_proveedor, String nom_proveedor,String nom_categoria, Double stock, Double pVenta) {
 		super();
 		this.id_prod = id_prod;
 		this.descripcion = descripcion;
 		this.cod_proveedor = cod_proveedor;
+		this.pVenta=pVenta;
 		this.nom_proveedor = nom_proveedor;
+		this.nom_categoria = nom_categoria;
 		Stock = stock;
 	}
+	
+	public Productos(String id_prod, String descripcion, String cod_proveedor, Double pVenta, Double stock,
+			String nom_categoria, String nom_proveedor) {
+		super();
+		this.id_prod = id_prod;
+		this.descripcion = descripcion;
+		this.cod_proveedor = cod_proveedor;
+		this.pVenta = pVenta;
+		Stock = stock;
+		this.nom_categoria = nom_categoria;
+		this.nom_proveedor = nom_proveedor;
+	}
+
+
+
+
+	public Double getpVenta() {
+		return pVenta;
+	}
+
+
+	public void setpVenta(Double pVenta) {
+		this.pVenta = pVenta;
+	}
+
+
+	public String getNom_categoria() {
+		return nom_categoria;
+	}
+
+
+	public void setNom_categoria(String nom_categoria) {
+		this.nom_categoria = nom_categoria;
+	}
+
+
 	public Productos() {
 		super();
 	}
@@ -50,7 +93,7 @@ public class Productos {
 	}
 	@Override
 	public String toString() {
-		return "Productos [descripcion=" + descripcion + "]";
+		return descripcion;
 	}
 
 	 

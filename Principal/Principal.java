@@ -13,8 +13,9 @@ import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatAtomOneDarkCon
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatLightOwlContrastIJTheme;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMaterialDarkerIJTheme;
 
+import mdlaf.MaterialLookAndFeel;
 import modelo.Ventas;
-import vistaDolar.vistaDolar;
+import vistaDolar.VistaDolar;
 
 import vistaInventario.MarcoArticulo;
 
@@ -26,6 +27,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Image;
 
 
 public class Principal extends javax.swing.JFrame {
@@ -36,12 +38,16 @@ public class Principal extends javax.swing.JFrame {
     	
     	
         initComponents();
-        getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
     
         setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
         
         lblNewLabel = new JLabel("");
-        lblNewLabel.setIcon(new ImageIcon("/home/ferc/Imágenes/b_grafica_1.jpg"));
+        lblNewLabel.setBounds(0, 0, 1366, 674);
+        ImageIcon imagen = new ImageIcon("/home/ferc/Imágenes/b_grafica_1.jpg");
+        Icon icono = new ImageIcon(imagen.getImage().getScaledInstance(lblNewLabel.getWidth(), lblNewLabel.getHeight(), Image.SCALE_DEFAULT));
+        lblNewLabel.setIcon(icono);
+        this.repaint();
+        getContentPane().setLayout(null);
         
         getContentPane().add(lblNewLabel);
         
@@ -65,7 +71,7 @@ public class Principal extends javax.swing.JFrame {
         btnSalir = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
-        setSize(1090,645);
+        setSize(1390,845);
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 0, 0));
         
@@ -215,7 +221,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_DolarActionPerformed
 
     private void btnDolarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDolarActionPerformed
-        vistaDolar vistaD = new vistaDolar();
+        VistaDolar vistaD = new VistaDolar();
         vistaD.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         vistaD.setVisible(true);
         vistaD.setAlwaysOnTop(false);
@@ -230,7 +236,7 @@ public class Principal extends javax.swing.JFrame {
     public static void main(String args[]) throws ParseException, UnsupportedLookAndFeelException {
                try {
            
-            UIManager.setLookAndFeel(new FlatAtomOneDarkContrastIJTheme());
+            UIManager.setLookAndFeel(new MaterialLookAndFeel	());
         } catch (UnsupportedLookAndFeelException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
