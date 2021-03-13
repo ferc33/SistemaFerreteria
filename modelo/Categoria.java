@@ -23,6 +23,14 @@ public class Categoria {
 
 
 
+	public Categoria(int idCategoria, String nomCategoria) {
+		super();
+		this.idCategoria = idCategoria;
+		this.nomCategoria = nomCategoria;
+	}
+
+
+
 	public Categoria() {
 			super();
 		}

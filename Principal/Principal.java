@@ -5,20 +5,25 @@
  */
 package Principal;
 
+import com.formdev.flatlaf.intellijthemes.FlatArcIJTheme;
 import com.formdev.flatlaf.intellijthemes.FlatCyanLightIJTheme;
 import com.formdev.flatlaf.intellijthemes.FlatGruvboxDarkHardIJTheme;
 import com.formdev.flatlaf.intellijthemes.FlatMaterialDesignDarkIJTheme;
 import com.formdev.flatlaf.intellijthemes.FlatMaterialDesignDarkIJTheme;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatAtomOneDarkContrastIJTheme;
+import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatAtomOneDarkIJTheme;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatLightOwlContrastIJTheme;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMaterialDarkerIJTheme;
 
 import mdlaf.MaterialLookAndFeel;
 import modelo.Ventas;
+import vistaActualizacion.VistaActualizacion;
+import vistaCategoria.VistaCategoria;
 import vistaDolar.VistaDolar;
 
 import vistaInventario.MarcoArticulo;
-
+import vistaProveedores.VistaProveedores;
+import vistaReportes.VistaReportes;
 import vistaVentas.vistaFrame;
 
 import javax.swing.*;
@@ -28,6 +33,8 @@ import java.util.logging.Logger;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Image;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 
 public class Principal extends javax.swing.JFrame {
@@ -43,7 +50,7 @@ public class Principal extends javax.swing.JFrame {
         
         lblNewLabel = new JLabel("");
         lblNewLabel.setBounds(0, 0, 1366, 674);
-        ImageIcon imagen = new ImageIcon("/home/ferc/Imágenes/b_grafica_1.jpg");
+        ImageIcon imagen = new ImageIcon("/home/ferc/git/SistemaFerreteria21/Iconos_Imagenes/wallppaers.jpg");
         Icon icono = new ImageIcon(imagen.getImage().getScaledInstance(lblNewLabel.getWidth(), lblNewLabel.getHeight(), Image.SCALE_DEFAULT));
         lblNewLabel.setIcon(icono);
         this.repaint();
@@ -103,6 +110,61 @@ public class Principal extends javax.swing.JFrame {
         jMenu1.add(btnArticulos);
 
         jMenuBar1.add(jMenu1);
+        
+        JMenuItem mntmProveedores = new JMenuItem("Proveedores");
+        mntmProveedores.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        	
+    		        VistaProveedores vistaD = new VistaProveedores();
+    		        vistaD.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+    		        vistaD.setVisible(true);
+    		        vistaD.setAlwaysOnTop(false);
+    		        vistaD.setLocationRelativeTo(new MarcoArticulo());
+    			
+    			}
+        	
+        });
+        jMenu1.add(mntmProveedores);
+        
+        JMenuItem mntmActualizar = new JMenuItem("Actualizar");
+        mntmActualizar.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+            	
+		        VistaActualizacion vistaD = new VistaActualizacion();
+		        vistaD.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		        vistaD.setVisible(true);
+		        vistaD.setAlwaysOnTop(false);
+		        vistaD.setLocationRelativeTo(new MarcoArticulo());
+        	}
+        });
+        
+        JMenuItem mntmCategorias = new JMenuItem("Categorias");
+        mntmCategorias.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        							
+        		  VistaCategoria vistaD = new VistaCategoria();
+			        vistaD.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			        vistaD.setVisible(true);
+			        vistaD.setAlwaysOnTop(false);
+			        vistaD.setLocationRelativeTo(new MarcoArticulo());
+
+        	}
+        	
+        });
+        jMenu1.add(mntmCategorias);
+        jMenu1.add(mntmActualizar);
+        
+        JMenuItem mntmReportes = new JMenuItem("Reportes");
+        mntmReportes.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		
+        		VistaReportes vista = new VistaReportes();
+        		vista.setLocationRelativeTo(null);
+        		vista.setDefaultCloseOperation(vista.DISPOSE_ON_CLOSE);
+        		vista.setVisible(true);
+        	}
+        });
+        jMenu1.add(mntmReportes);
 
         menuTemas.setText("Color ");
 
@@ -236,7 +298,7 @@ public class Principal extends javax.swing.JFrame {
     public static void main(String args[]) throws ParseException, UnsupportedLookAndFeelException {
                try {
            
-            UIManager.setLookAndFeel(new MaterialLookAndFeel	());
+            UIManager.setLookAndFeel(new FlatArcIJTheme());
         } catch (UnsupportedLookAndFeelException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -268,5 +330,4 @@ public class Principal extends javax.swing.JFrame {
     private MarcoArticulo articulos;    
     private vistaFrame ventas;
     private JLabel lblNewLabel;
-    // End of variables declaration//GEN-END:variables
 }

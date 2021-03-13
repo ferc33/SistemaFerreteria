@@ -148,57 +148,6 @@ public class MarcoArticulo extends JFrame {
 
 		setSize(1000, 670);
 
-		JButton btnProveedor = new JButton();
-		btnProveedor.setIcon(new ImageIcon("/home/ferc/Descargas/agent.png"));
-		btnProveedor.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				 
-		        VistaProveedores vistaD = new VistaProveedores();
-		        vistaD.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		        vistaD.setVisible(true);
-		        vistaD.setAlwaysOnTop(false);
-		        vistaD.setLocationRelativeTo(new MarcoArticulo());
-			
-			}
-		});
-		btnProveedor.setFont(new Font("Comfortaa", Font.PLAIN, 12));
-		btnProveedor.setBounds(875, 53, 55, 50);
-		getContentPane().add(btnProveedor);
-
-		JButton btnCategoria = new JButton();
-		btnCategoria.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				   VistaCategoria vistaD = new VistaCategoria();
-			        vistaD.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			        vistaD.setVisible(true);
-			        vistaD.setAlwaysOnTop(false);
-			        vistaD.setLocationRelativeTo(new MarcoArticulo());
-
-			}
-		});
-		btnCategoria.setText("Categoria");
-		btnCategoria.setFont(new Font("Comfortaa", Font.PLAIN, 12));
-		btnCategoria.setBounds(875, 112, 113, 99);
-		getContentPane().add(btnCategoria);
-
-		JButton jButton1 = new JButton();
-		jButton1.setText("Actualizar Listas");
-		jButton1.setFont(new Font("Decker", Font.PLAIN, 14));
-		jButton1.setBounds(875, 370, 113, 99);
-		getContentPane().add(jButton1);
-
-		JButton btnListarPorProveedor = new JButton();
-		btnListarPorProveedor.setText("Stock");
-		btnListarPorProveedor.setBounds(875, 231, 113, 99);
-		getContentPane().add(btnListarPorProveedor);
-
-		JButton Exit = new JButton();
-		Exit.setText("Eliminar");
-		Exit.setFont(new Font("Decker", Font.PLAIN, 14));
-		Exit.setBounds(875, 513, 113, 99);
-		getContentPane().add(Exit);
-
 		JLabel lblCosto_6_1 = new JLabel("Codigo Art");
 		lblCosto_6_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCosto_6_1.setBounds(250, 36, 125, 35);
@@ -467,7 +416,7 @@ public class MarcoArticulo extends JFrame {
 			});
 			btnEliminar.setIcon(new ImageIcon(LaminaPrincipal.class.getResource("/Iconos_Imagenes/SALIR_ROJO.png")));
 			btnEliminar.setFont(new Font("Comfortaa", Font.PLAIN, 12));
-			btnEliminar.setBounds(758, -5, 66, 50);
+			btnEliminar.setBounds(834, 0, 66, 50);
 			getContentPane().add(btnEliminar);
 
 			btnUpdate = new JButton();
@@ -479,7 +428,7 @@ public class MarcoArticulo extends JFrame {
 				}
 			});
 			btnUpdate.setFont(new Font("Comfortaa", Font.PLAIN, 12));
-			btnUpdate.setBounds(670, -5, 66, 50);
+			btnUpdate.setBounds(746, 0, 66, 50);
 			getContentPane().add(btnUpdate);
 
 			btnAñadir = new JButton();
@@ -493,7 +442,7 @@ public class MarcoArticulo extends JFrame {
 
 			});
 			btnAñadir.setFont(new Font("Comfortaa", Font.PLAIN, 12));
-			btnAñadir.setBounds(582, -5, 66, 50);
+			btnAñadir.setBounds(658, 0, 66, 50);
 			getContentPane().add(btnAñadir);
 
 			txtNombre = new JTextField();
@@ -533,7 +482,7 @@ public class MarcoArticulo extends JFrame {
 
 			campoBuscarTodo = new JTextField();
 			campoBuscarTodo.setColumns(10);
-			campoBuscarTodo.setBounds(32, 386, 378, 26);
+			campoBuscarTodo.setBounds(33, 386, 378, 26);
 			getContentPane().add(campoBuscarTodo);
 
 			grupo_botones = new ButtonGroup();
@@ -565,7 +514,7 @@ public class MarcoArticulo extends JFrame {
 			getContentPane().add(btnLimpiarCampos);
 
 			JPanel panel = new JPanel();
-			panel.setBounds(10, 451, 853, 179);
+			panel.setBounds(10, 451, 978, 179);
 			getContentPane().add(panel);
 			panel.setLayout(new BorderLayout(100, 0));
 
@@ -577,12 +526,12 @@ public class MarcoArticulo extends JFrame {
 
 			panel_1 = new JPanel();
 			panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
-			panel_1.setBounds(534, 57, 329, 290);
+			panel_1.setBounds(534, 57, 454, 290);
 			getContentPane().add(panel_1);
 			panel_1.setLayout(new BorderLayout(0, 0));
 
 			imgLabel = new JLabel("");
-			panel_1.add(imgLabel);
+			panel_1.add(imgLabel, BorderLayout.NORTH);
 
 			getContentPane().setLayout(null);
 			tablaProductos.setModel(modeloTabla);

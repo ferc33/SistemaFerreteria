@@ -24,6 +24,7 @@ import org.apache.poi.util.SystemOutLogger;
 import controlador.Controlador;
 import modelo.Categoria;
 import modelo.Conexion;
+import modelo.Producto;
 import modelo.Proveedor;
 import modelo.innerjoin.Productos;
 import net.sf.jasperreports.engine.JRException;
@@ -32,6 +33,8 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
+import vistaInventario.MarcoArticulo;
+
 import javax.swing.JTable;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -40,6 +43,7 @@ import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -48,21 +52,21 @@ import java.awt.GridLayout;
 import javax.swing.JTabbedPane;
 import javax.swing.JLayeredPane;
 import javax.swing.JToolBar;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.KeyAdapter;
+import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
+import javax.swing.BoxLayout;
 
 public class VistaProveedores extends JDialog {
-	private Connection conn = null;
-	private JTextField txtNombre;
-	private JTextField txtTel;
-	private JTextField txtEmail;
-	private JTextField txtDir;
 	private DefaultComboBoxModel modeloProveedor;
-	private JComboBox comboBoxProveedores;
 	private Controlador base = new Controlador();
 	private ArrayList<Proveedor> listaProveedores;
 	private Proveedor proveedor;
-	private JComboBox comboBoxCategorias;
 	private JScrollPane scrollPane;
 	private JTable tablaProveedores;
+	private Connection conn = null;
 	private Conexion con;
 	private DefaultTableModel modeloTablaProveedores = new DefaultTableModel();
 	private DefaultTableModel modeloTabla = new DefaultTableModel() {
@@ -72,6 +76,7 @@ public class VistaProveedores extends JDialog {
 
 		}
 	};
+	private JTextField txtDesc;
 
 	public static void main(String[] args) {
 		try {
@@ -87,107 +92,80 @@ public class VistaProveedores extends JDialog {
 
 		con = new Conexion();
 		JPanel panel = new JPanel();
-		panel.setBounds(12, 0, 676, 555);
+		panel.setBounds(12, 0, 676, 358);
 		getContentPane().add(panel);
 		panel.setLayout(null);
 
 		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(0, 0, 677, 133);
+		panel_1.setBounds(0, 0, 677, 73);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
-
-		JLabel lblNombre = new JLabel("Nombre:");
-		lblNombre.setBounds(12, 12, 60, 17);
-		panel_1.add(lblNombre);
-
-		JLabel lblTel = new JLabel("Tel:");
-		lblTel.setBounds(12, 41, 60, 17);
-		panel_1.add(lblTel);
-
-		JLabel lblEmail = new JLabel("Email:");
-		lblEmail.setBounds(12, 70, 60, 17);
-		panel_1.add(lblEmail);
-
-		JLabel lblDireccin = new JLabel("Dirección");
-		lblDireccin.setBounds(12, 99, 60, 17);
-		panel_1.add(lblDireccin);
-
-		txtNombre = new JTextField();
-		txtNombre.setBounds(90, 3, 214, 35);
-		panel_1.add(txtNombre);
-		txtNombre.setColumns(10);
-
-		txtTel = new JTextField();
-		txtTel.setBounds(90, 39, 214, 29);
-		panel_1.add(txtTel);
-		txtTel.setColumns(10);
-
-		txtEmail = new JTextField();
-		txtEmail.setBounds(90, 70, 214, 29);
-		panel_1.add(txtEmail);
-		txtEmail.setColumns(10);
-
-		txtDir = new JTextField();
-		txtDir.setBounds(90, 99, 214, 34);
-		panel_1.add(txtDir);
-		txtDir.setColumns(10);
-
-		comboBoxProveedores = new JComboBox();
-		comboBoxProveedores.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-
-				comboBoxSelectItemEvent(e);
-
+		
+		txtDesc = new JTextField();
+		txtDesc.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				txtDescKeyReleased(e);
 			}
 		});
-
-		comboBoxProveedores.setBounds(316, 10, 169, 21);
-		panel_1.add(comboBoxProveedores);
-
-		JLabel lblProveedor = new JLabel("Proveedores");
-		lblProveedor.setBounds(499, 12, 82, 17);
-		panel_1.add(lblProveedor);
-
-		JLabel lblCategorias = new JLabel("Rubro");
-		lblCategorias.setBounds(499, 41, 46, 17);
-		panel_1.add(lblCategorias);
-
-		comboBoxCategorias = new JComboBox();
-		comboBoxCategorias.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				comboBoxCategoriasItemEvent(e);
-			}
-		});
-		comboBoxCategorias.setBounds(316, 39, 169, 21);
-		panel_1.add(comboBoxCategorias);
-
-		JButton btnListar = new JButton("Listar");
-		btnListar.addActionListener(new ActionListener() {
+		txtDesc.setBounds(90, 21, 214, 32);
+		panel_1.add(txtDesc);
+		txtDesc.setColumns(10);
+		
+		JLabel lblBuscar = new JLabel("Buscar:");
+		lblBuscar.setBounds(12, 28, 60, 17);
+		panel_1.add(lblBuscar);
+		
+		JLabel label = new JLabel("");
+		label.setHorizontalAlignment(SwingConstants.LEFT);
+		label.setIcon(new ImageIcon("/home/ferc/git/SistemaFerreteria21/Iconos_Imagenes/zoom_iwwn.png"));
+		label.setBounds(314, 12, 46, 41);
+		panel_1.add(label);
+		
+		JPanel panel_4 = new JPanel();
+		panel_4.setBounds(422, 12, 210, 44);
+		panel_1.add(panel_4);
+		panel_4.setLayout(new GridLayout(0, 4, 0, 0));
+		
+		JButton btnNewButton = new JButton("");
+		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				listarProveedoresActionPerformed(e);
-
+				abrirVentanaActionPerformed(e);
 			}
 		});
-		btnListar.setBounds(597, 7, 68, 27);
-		panel_1.add(btnListar);
-
-		JButton btnProductosPdf = new JButton("Imprimir");
-		btnProductosPdf.addActionListener(new ActionListener() {
+		
+		panel_4.add(btnNewButton);
+		btnNewButton.setIcon(new ImageIcon("/home/ferc/git/SistemaFerreteria21/Iconos_Imagenes/add.png"));
+		
+		JButton btnModificar = new JButton("");
+		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				dameProductoPorCategoria(e);
+				editarVentanaActionPerformed(e);
 			}
 		});
-		btnProductosPdf.setBounds(544, 36, 121, 27);
-		panel_1.add(btnProductosPdf);
+		panel_4.add(btnModificar);
+		btnModificar.setIcon(new ImageIcon("/home/ferc/git/SistemaFerreteria21/Iconos_Imagenes/geasr.png"));
+		
+		JButton btnNewButton_2 = new JButton("");
+		panel_4.add(btnNewButton_2);
+		btnNewButton_2.setIcon(new ImageIcon("/home/ferc/git/SistemaFerreteria21/Iconos_Imagenes/delete4.png"));
+		
+		JButton btnNewButton_1 = new JButton("");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateTablaActionPerformed(e);
+			}
+		});
+		btnNewButton_1.setIcon(new ImageIcon("/home/ferc/git/SistemaFerreteria21/Iconos_Imagenes/refresh.png"));
+		panel_4.add(btnNewButton_1);
 
 		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(0, 145, 677, 318);
+		panel_2.setBounds(0, 85, 677, 268);
 		panel.add(panel_2);
 		panel_2.setLayout(new BorderLayout(0, 0));
 
 		JScrollPane scrollPane_1 = new JScrollPane();
+		
 		panel_2.add(scrollPane_1, BorderLayout.CENTER);
 
 		tablaProveedores = new JTable();
@@ -197,89 +175,33 @@ public class VistaProveedores extends JDialog {
 		tablaProveedores.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
 			public void valueChanged(ListSelectionEvent e) {
-				// dameDatosListSelection(e);
+				 dameDatosListSelection(e);
 			}
 
 		});
-
-		JPanel panel_3 = new JPanel();
-		panel_3.setBounds(12, 475, 665, 68);
-		panel.add(panel_3);
-		panel_3.setLayout(new GridLayout(0, 4, 0, 0));
-
-		JButton btnGuardar = new JButton();
-		btnGuardar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				insertarProveedorActionPerformed(e);
-			}
-		});
-		btnGuardar.setText("Guardar");
-		panel_3.add(btnGuardar);
-
-		JButton btnActualizarProveedor = new JButton();
-		btnActualizarProveedor.setText("Actualizar");
-		panel_3.add(btnActualizarProveedor);
-
-		JButton jButton1 = new JButton();
-		jButton1.setText("Eliminar");
-		panel_3.add(jButton1);
-
-		JButton btnCancelar = new JButton();
-		btnCancelar.setText("Salir");
-		panel_3.add(btnCancelar);
 	}
 //INSERTAR UN PROVEEDOR
 
-	private void insertarProveedorActionPerformed(ActionEvent e) {
 
-		String nombre = txtNombre.getText();
-		String dir = txtDir.getText();
-		String mail = txtEmail.getText();
-		String tel = txtTel.getText();
 
-		Proveedor proveedor = new Proveedor(nombre, dir, mail, tel);
-		base.insertarProveedor(proveedor);
-
-	}
-
-	private void ColumnasDeTablaProveedores() {
-
-		modeloTabla.addColumn("Id Proveedor");
-		modeloTabla.addColumn("Descripcion");
-		modeloTabla.addColumn("Rubro");
-		modeloTabla.addColumn("Stock");
-
-		TableColumn ColCodigo = tablaProveedores.getColumn("Id Proveedor");
-		TableColumn ColNombre = tablaProveedores.getColumn("Descripcion");
-		TableColumn ColProve = tablaProveedores.getColumn("Rubro");
-		TableColumn ColVenta = tablaProveedores.getColumn("Stock");
-
-		ColCodigo.setMaxWidth(90);
-		ColCodigo.setMinWidth(10);
-
-		ColNombre.setMinWidth(300);
-		ColNombre.setMaxWidth(200);
-
-		ColProve.setMaxWidth(150);
-		ColProve.setMinWidth(100);
-
-		ColVenta.setMaxWidth(120);
-		ColVenta.setMinWidth(10);
-
-	}
+	
 
 	private void cargarColumnasTablaProveedores() {
-
-		modeloTabla.addColumn("Nombre");
-		modeloTabla.addColumn("Direccion");
+		modeloTabla.addColumn(" ");
+		modeloTabla.addColumn("Descripcion");
+		modeloTabla.addColumn("Direccion");		
 		modeloTabla.addColumn("Correo");
 		modeloTabla.addColumn("Tel");
-
-		TableColumn ColCodigo = tablaProveedores.getColumn("Nombre");
+		TableColumn id = tablaProveedores.getColumn(" ");
 		TableColumn ColNombre = tablaProveedores.getColumn("Direccion");
+		TableColumn ColCodigo = tablaProveedores.getColumn("Descripcion");
+		
 		TableColumn ColProve = tablaProveedores.getColumn("Correo");
 		TableColumn ColVenta = tablaProveedores.getColumn("Tel");
 
+		id.setMaxWidth(30);
+		id.setMinWidth(20);
+		
 		ColCodigo.setMaxWidth(200);
 		ColCodigo.setMinWidth(10);
 
@@ -296,9 +218,11 @@ public class VistaProveedores extends JDialog {
 
 	public VistaProveedores() {
 		initComponent();
-		ColumnasDeTablaProveedores();
+		cargarColumnasTablaProveedores();
+		modeloTablaProveedores();		
 		modeloComboBoxProveedores();
-		setBounds(100, 100, 700, 600);
+		
+		setBounds(100, 100, 700, 400);
 		getContentPane().setLayout(null);
 
 	}
@@ -307,7 +231,6 @@ public class VistaProveedores extends JDialog {
 	private void modeloComboBoxProveedores() {
 
 		modeloProveedor = new DefaultComboBoxModel(base.dameProveedores());
-		comboBoxProveedores.setModel(modeloProveedor);
 
 	}
 
@@ -320,18 +243,55 @@ public class VistaProveedores extends JDialog {
 		for (int i = 0; i < numeroProducto; i++) {
 
 			Proveedor proveedor = listaProveedores.get(i);
+			int id = proveedor.getIdProveedor();
 			String nombre = proveedor.getNomProveedor();
 			String dir = proveedor.getDirProveedor();
 			String tel = proveedor.getTelProveedor();
 			String correo = proveedor.getMailProveedor();
 
-			modeloTabla.setValueAt(tel, i, 0);
+			modeloTabla.setValueAt(id, i, 0);
 			modeloTabla.setValueAt(proveedor, i, 1);
 			modeloTabla.setValueAt(dir, i, 2);
 			modeloTabla.setValueAt(correo, i, 3);
+			modeloTabla.setValueAt(tel, i, 4);
 
 		}
 
+	}
+	
+	private void updateTablaActionPerformed(ActionEvent e) {
+		LimpiarLista();
+		modeloTablaProveedores();
+	}
+	
+	private void abrirVentanaActionPerformed(ActionEvent e) {
+		
+		VMproveedores  vistaD = new VMproveedores();
+	      vistaD.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+	      vistaD.setVisible(true);
+	      vistaD.setAlwaysOnTop(false);
+	      vistaD.setLocationRelativeTo(new VistaProveedores());
+
+	}
+	
+	
+	private void editarVentanaActionPerformed(ActionEvent e) {
+		
+		Proveedor proveedor = (Proveedor) modeloTabla.getValueAt(tablaProveedores.getSelectedRow(), 1);
+			
+		VMproveedorUpdate  vistaD = new VMproveedorUpdate();
+	      vistaD.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+	      vistaD.setVisible(true);
+	      vistaD.setAlwaysOnTop(false);
+	      
+	      vistaD.setLocationRelativeTo(new VMproveedorUpdate());
+	      vistaD.lblId.setText(String.valueOf(proveedor.getIdProveedor()));
+	      vistaD.txtTel.setText(proveedor.getTelProveedor());
+	      vistaD.txtEmail.setText(proveedor.getMailProveedor());
+	      vistaD.txtDesc.setText(proveedor.getNomProveedor());
+	      vistaD.txtDir.setText(proveedor.getDirProveedor());
+	      
+	     
 	}
 
 	// CLICK EN TABLA
@@ -340,80 +300,50 @@ public class VistaProveedores extends JDialog {
 		if (!e.getValueIsAdjusting() && (tablaProveedores.getSelectedRow() >= 0)) {
 
 			Proveedor proveedor = (Proveedor) modeloTabla.getValueAt(tablaProveedores.getSelectedRow(), 1);
-			txtNombre.setText(String.valueOf(proveedor.getNomProveedor()));
-			txtDir.setText(String.valueOf(proveedor.getDirProveedor()));
-			txtEmail.setText(String.valueOf(proveedor.getMailProveedor()));
-			txtTel.setText(String.valueOf(proveedor.getTelProveedor()));
+			
 
 		}
 
 	}
+	
+	private void txtDescKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescKeyReleased
 
-	// LISTA LOS PRODUCTOS EN LA TABLA PROVEEDORES
-	private void listarProveedoresActionPerformed(ActionEvent e) {
-		// OBTENGO EL ID DEL PROVEEDOR DESDE EL COMBOBOX
-		Proveedor prov = (Proveedor) comboBoxProveedores.getSelectedItem();
-		// ME DEVUELVE LOS PROVEEDORES Y LOS GUARDA EL VECTOR PRODUCTOS
-		ArrayList<Productos> productos = base.dameProductos(prov.getIdProveedor());
-		int columnas = productos.size();
-		modeloTabla.setNumRows(columnas);
+		 			
+		        LimpiarLista();
+		
+                String cadena = txtDesc.getText();
+                
+                ArrayList<Proveedor> listaProveedor = base.obtenerProveedoresPorCriterio(cadena);
 
-		for (int i = 0; i < columnas; i++) {
+                int numeroProducto = listaProveedor.size();
+                modeloTabla.setNumRows(numeroProducto);
+                for (int i = 0; i < numeroProducto; i++) {
 
-			Productos producto = productos.get(i);
-			String idD = producto.getId_prod();
-			String desc = producto.getDescripcion();
-			String nom = producto.getNom_proveedor();
-			double stock = producto.getStock();
+                    Proveedor proveedor = listaProveedor.get(i);
+                    int clave = proveedor.getIdProveedor();
+                    String nomBre = proveedor.getNomProveedor();
+                    String dir = proveedor.getDirProveedor();
+                    String tel = proveedor.getTelProveedor();
+                    String mail = proveedor.getMailProveedor();
 
-			modeloTabla.setValueAt(idD, i, 0);
-			modeloTabla.setValueAt(desc, i, 1);
-			modeloTabla.setValueAt(nom, i, 2);
-			modeloTabla.setValueAt(stock, i, 3);
+                    modeloTabla.setValueAt(clave, i, 0);
+                    modeloTabla.setValueAt(proveedor, i, 1);
+                    modeloTabla.setValueAt(dir, i, 2);
+                    modeloTabla.setValueAt(tel, i, 3);
+                    modeloTabla.setValueAt(mail, i, 4);
 
-		}
+       
+}
 	}
-
-	private void dameProductoPorCategoria(ActionEvent e) {
-		try {
-			String path = "/home/ferc/JaspersoftWorkspace/SistemaFereteria/Producto.jasper";
-			conn = con.getConexion();
-			Map parametros = new HashMap();
-			Categoria categoria = (Categoria) comboBoxCategorias.getSelectedItem();
-			int c = categoria.getIdCategoria();
-			System.out.println(c);
-			parametros.put("idCategoria", c);
-			JasperReport reporte = (JasperReport) JRLoader.loadObjectFromFile(path);
-			JasperPrint jprint = JasperFillManager.fillReport(reporte, parametros, conn);
-			JasperViewer view = new JasperViewer(jprint, false);
-			view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-			view.setVisible(true);
-		} catch (Exception es) {
-			es.printStackTrace();
-		}
-
-	}
-
-	private void comboBoxSelectItemEvent(ItemEvent e) {
-
-		if (e.getStateChange() == ItemEvent.SELECTED) {
-
-			Proveedor prove = (Proveedor) comboBoxProveedores.getSelectedItem();
-			// GUARDAMOS LO QUE OBTENEMOS DE LA BASE DE DATOS EN UN MODELO
-			DefaultComboBoxModel modCategoria = new DefaultComboBoxModel(base.dameCategorias(prove.getIdProveedor()));
-			// MOSTRAMOS EL MODELO EN EL COMBOBOX
-			comboBoxCategorias.setModel(modCategoria);
-		}
-	}
-
-	private void comboBoxCategoriasItemEvent(ItemEvent e) {
-		if (e.getStateChange() == ItemEvent.SELECTED) {
-
-			Categoria cat = (Categoria) comboBoxCategorias.getSelectedItem();
-
-		}
-
-	}
+	
+	private void LimpiarLista() {
+        int numFilas = modeloTabla.getRowCount();
+        if (numFilas > 0) {
+            for (int i = numFilas - 1; i < 0; i--) {
+            	modeloTabla.removeRow(i);
+            }
+        }
+    }
 }
 
 /* NO USAR MAS DE UN MODELO EN UNA TABLA */
