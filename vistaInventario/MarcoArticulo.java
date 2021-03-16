@@ -55,6 +55,7 @@ import vistaProveedores.VistaProveedores;
 import javax.swing.SwingConstants;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import java.awt.GridLayout;
 
 public class MarcoArticulo extends JFrame {
 	private JPanel laminaP;
@@ -189,7 +190,7 @@ public class MarcoArticulo extends JFrame {
 		title2 = BorderFactory.createTitledBorder("Proveedores");
 		comboBoxProveedores.setBorder(title2);
 		txtIdProduct = new JTextField();
-		txtIdProduct.setBounds(681, 422, 114, 21);
+		txtIdProduct.setBounds(526, 421, 114, 21);
 		getContentPane().add(txtIdProduct);
 		txtIdProduct.setColumns(10);
 		
@@ -202,6 +203,46 @@ public class MarcoArticulo extends JFrame {
 		txtCategoria.setColumns(10);
 		txtCategoria.setBounds(32, 290, 234, 26);
 		getContentPane().add(txtCategoria);
+		
+		JPanel panel = new JPanel();
+		panel.setBounds(595, 359, 393, 53);
+		getContentPane().add(panel);
+					panel.setLayout(new GridLayout(1, 3, 0, 0));
+		
+					btnAñadir = new JButton();
+					btnAñadir.setIcon(new ImageIcon("/home/ferc/git/SistemaFerreteria21/Iconos_Imagenes/Agregar.png"));
+					panel.add(btnAñadir);
+				
+					btnAñadir.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+
+							btnAñadirActionPerformed(arg0);
+
+						}
+
+					});
+					btnAñadir.setFont(new Font("Comfortaa", Font.PLAIN, 12));
+					
+								btnUpdate = new JButton();
+								panel.add(btnUpdate);
+								btnUpdate.setIcon(new ImageIcon("/home/ferc/git/SistemaFerreteria21/Iconos_Imagenes/Editar.png"));
+								btnUpdate.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent arg0) {
+										btnUpdateActionPerformed(arg0);
+
+									}
+								});
+								btnUpdate.setFont(new Font("Comfortaa", Font.PLAIN, 12));
+								
+											btnEliminar = new JButton();
+											panel.add(btnEliminar);
+											btnEliminar.addActionListener(new ActionListener() {
+												public void actionPerformed(ActionEvent e) {
+													
+												}
+											});
+											btnEliminar.setIcon(new ImageIcon("/home/ferc/git/SistemaFerreteria21/Iconos_Imagenes/Eliminar.png"));
+											btnEliminar.setFont(new Font("Comfortaa", Font.PLAIN, 12));
 		txtIdProduct.setVisible(false);
 	}
 	
@@ -408,43 +449,6 @@ public class MarcoArticulo extends JFrame {
 			txtIdProducto.setColumns(10);
 			getContentPane().add(txtIdProducto);
 
-			btnEliminar = new JButton();
-			btnEliminar.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					
-				}
-			});
-			btnEliminar.setIcon(new ImageIcon(LaminaPrincipal.class.getResource("/Iconos_Imagenes/SALIR_ROJO.png")));
-			btnEliminar.setFont(new Font("Comfortaa", Font.PLAIN, 12));
-			btnEliminar.setBounds(834, 0, 66, 50);
-			getContentPane().add(btnEliminar);
-
-			btnUpdate = new JButton();
-			btnUpdate.setIcon(new ImageIcon(LaminaPrincipal.class.getResource("/Iconos_Imagenes/update.png")));
-			btnUpdate.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					btnUpdateActionPerformed(arg0);
-
-				}
-			});
-			btnUpdate.setFont(new Font("Comfortaa", Font.PLAIN, 12));
-			btnUpdate.setBounds(746, 0, 66, 50);
-			getContentPane().add(btnUpdate);
-
-			btnAñadir = new JButton();
-			btnAñadir.setIcon(new ImageIcon(LaminaPrincipal.class.getResource("/Iconos_Imagenes/add.png")));
-			btnAñadir.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-
-					btnAñadirActionPerformed(arg0);
-
-				}
-
-			});
-			btnAñadir.setFont(new Font("Comfortaa", Font.PLAIN, 12));
-			btnAñadir.setBounds(658, 0, 66, 50);
-			getContentPane().add(btnAñadir);
-
 			txtNombre = new JTextField();
 			txtNombre.addKeyListener(new KeyAdapter() {
 				@Override
@@ -526,7 +530,7 @@ public class MarcoArticulo extends JFrame {
 
 			panel_1 = new JPanel();
 			panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
-			panel_1.setBounds(534, 57, 454, 290);
+			panel_1.setBounds(534, 12, 454, 300);
 			getContentPane().add(panel_1);
 			panel_1.setLayout(new BorderLayout(0, 0));
 
@@ -544,14 +548,8 @@ public class MarcoArticulo extends JFrame {
 			});
 			btnImportar.setText("Importar");
 			btnImportar.setFont(new Font("Comfortaa", Font.PLAIN, 12));
-			btnImportar.setBounds(553, 359, 105, 50);
+			btnImportar.setBounds(742, 324, 105, 26);
 			getContentPane().add(btnImportar);
-
-			btnAñadir_2 = new JButton();
-			btnAñadir_2.setText("Guardar");
-			btnAñadir_2.setFont(new Font("Comfortaa", Font.PLAIN, 12));
-			btnAñadir_2.setBounds(691, 360, 104, 50);
-			getContentPane().add(btnAñadir_2);
 
 			// Obtiene los valores de la tabla con el click
 			tablaProductos.setIntercellSpacing(new java.awt.Dimension(4, 4));
@@ -721,7 +719,6 @@ public class MarcoArticulo extends JFrame {
 		};
 		
 		private JButton btnImportar;
-		private JButton btnAñadir_2;
 		private JLabel imgLabel;
 		private JComboBox comboBoxCategoria_1;
 		private JTextField txtIdProduct;

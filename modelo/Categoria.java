@@ -11,6 +11,7 @@ public class Categoria {
         private int idCategoria;
         private String nomCategoria;
         private int idProveedor;
+        private String nomProveedor;
 
      
         
@@ -23,10 +24,40 @@ public class Categoria {
 
 
 
+	public String getNomProveedor() {
+		return nomProveedor;
+	}
+
+
+
+	public void setNomProveedor(String nomProveedor) {
+		this.nomProveedor = nomProveedor;
+	}
+
+
+
+	public Categoria(int idCategoria, String nomCategoria, String nomProveedor) {
+		super();
+		this.idCategoria = idCategoria;
+		this.nomCategoria = nomCategoria;
+		this.nomProveedor = nomProveedor;
+	}
+
+
+
 	public Categoria(int idCategoria, String nomCategoria) {
 		super();
 		this.idCategoria = idCategoria;
 		this.nomCategoria = nomCategoria;
+	}
+
+	
+
+	public Categoria(int idCategoria, String nomCategoria, int idProveedor) {
+		super();
+		this.idCategoria = idCategoria;
+		this.nomCategoria = nomCategoria;
+		this.idProveedor = idProveedor;
 	}
 
 

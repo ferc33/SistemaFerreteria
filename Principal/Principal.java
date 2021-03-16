@@ -50,7 +50,7 @@ public class Principal extends javax.swing.JFrame {
         
         lblNewLabel = new JLabel("");
         lblNewLabel.setBounds(0, 0, 1366, 674);
-        ImageIcon imagen = new ImageIcon("/home/ferc/git/SistemaFerreteria21/Iconos_Imagenes/wallppaers.jpg");
+        ImageIcon imagen = new ImageIcon("/home/ferc/git/SistemaFerreteria21/Iconos_Imagenes/wallpaper.jpg");
         Icon icono = new ImageIcon(imagen.getImage().getScaledInstance(lblNewLabel.getWidth(), lblNewLabel.getHeight(), Image.SCALE_DEFAULT));
         lblNewLabel.setIcon(icono);
         this.repaint();
@@ -298,7 +298,7 @@ public class Principal extends javax.swing.JFrame {
     public static void main(String args[]) throws ParseException, UnsupportedLookAndFeelException {
                try {
            
-            UIManager.setLookAndFeel(new FlatArcIJTheme());
+            UIManager.setLookAndFeel(new FlatAtomOneDarkContrastIJTheme());
         } catch (UnsupportedLookAndFeelException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }

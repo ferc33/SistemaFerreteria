@@ -959,6 +959,8 @@ public class Controlador {
 
 	}
 
+	
+	
 	public ArrayList<Producto> obtenerProductosPorCriterio(String criterio) {
 
 		ArrayList<Producto> listaProductos = new ArrayList<Producto>();
@@ -1014,18 +1016,17 @@ public class Controlador {
 
 		try {
 
-			String sql = "SELECT * FROM CAT_CATEGORIA";
+			String sql = "SELECT ID_CATEGORIA, NOM_CATEGORIA, CAT_PROVEEDORES.NOM_PROVEEDOR FROM CAT_CATEGORIA"
+					+ " INNER JOIN CAT_PROVEEDORES ON CAT_CATEGORIA.ID_PROVEEDOR = CAT_PROVEEDORES.ID_PROVEEDOR ";
 			ps = con.prepareStatement(sql);
 			rs = ps.executeQuery();
-			// Añade primer item al comboboxCategoria
 		
-			// llena el combobox de categorias
 			while (rs.next()) {
 				
 				Categoria cat = new Categoria();
 				cat.setIdCategoria(rs.getInt("ID_CATEGORIA"));
 				cat.setNomCategoria(rs.getString("NOM_CATEGORIA"));
-				cat.setIdProveedor(rs.getInt("ID_PROVEEDOR"));
+				cat.setNomProveedor(rs.getString("NOM_PROVEEDOR"));
 				categoria.add(cat);
 			}
 
@@ -1220,6 +1221,26 @@ public class Controlador {
 
 	}
 
+	public void actualizarCategoria(Categoria categoria) {
+
+		try {
+
+			prep = Conexion.prepareStatement("UPDATE `db-sistema`.CAT_CATEGORIA SET ID_PROVEEDOR = ?,NOM_CATEGORIA = ? WHERE ID_CATEGORIA=?");
+
+			prep.setInt(1, categoria.getIdProveedor());
+			prep.setString(2, categoria.getNomCategoria());
+			prep.setInt(3, categoria.getIdCategoria());
+			
+		
+			prep.executeUpdate();
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		} 
+	}
+
+	
+	
 	public void borrarArticulo(Producto producto) {
 
 		try {
@@ -1230,6 +1251,36 @@ public class Controlador {
 
 		} catch (SQLException ex) {
 			ex.printStackTrace();
+
+		}
+
+	}
+	
+public void eliminarCategoria(Categoria categoria) {
+	
+	try {
+
+		prep = Conexion.prepareStatement("DELETE FROM `db-sistema`.CAT_CATEGORIA WHERE ID_CATEGORIA=?");
+		prep.setInt(1, categoria.getIdCategoria());
+		prep.executeQuery();
+
+	} catch (SQLException ex) {
+		ex.printStackTrace();
+
+	}
+	
+}
+	
+	public void borrarProveedor(Proveedor proveedor) {
+
+		try {
+
+			prep = Conexion.prepareStatement("DELETE FROM `db-sistema`.CAT_PROVEEDORES WHERE ID_PROVEEDOR=?");
+			prep.setInt(1, proveedor.getIdProveedor());
+			prep.executeQuery();
+
+		} catch (SQLException ex) {
+			JOptionPane.showMessageDialog(null, "No puede eliminar este proveedor, ya que tiene articulos asignados");
 
 		}
 

@@ -51,6 +51,7 @@ import java.awt.event.ItemEvent;
 import java.awt.GridLayout;
 import javax.swing.JTabbedPane;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -123,7 +124,7 @@ public class VistaProveedores extends JDialog {
 		panel_1.add(label);
 		
 		JPanel panel_4 = new JPanel();
-		panel_4.setBounds(422, 12, 210, 44);
+		panel_4.setBounds(422, 12, 243, 49);
 		panel_1.add(panel_4);
 		panel_4.setLayout(new GridLayout(0, 4, 0, 0));
 		
@@ -135,7 +136,7 @@ public class VistaProveedores extends JDialog {
 		});
 		
 		panel_4.add(btnNewButton);
-		btnNewButton.setIcon(new ImageIcon("/home/ferc/git/SistemaFerreteria21/Iconos_Imagenes/add.png"));
+		btnNewButton.setIcon(new ImageIcon("/home/ferc/git/SistemaFerreteria21/Iconos_Imagenes/Agregar.png"));
 		
 		JButton btnModificar = new JButton("");
 		btnModificar.addActionListener(new ActionListener() {
@@ -144,11 +145,7 @@ public class VistaProveedores extends JDialog {
 			}
 		});
 		panel_4.add(btnModificar);
-		btnModificar.setIcon(new ImageIcon("/home/ferc/git/SistemaFerreteria21/Iconos_Imagenes/geasr.png"));
-		
-		JButton btnNewButton_2 = new JButton("");
-		panel_4.add(btnNewButton_2);
-		btnNewButton_2.setIcon(new ImageIcon("/home/ferc/git/SistemaFerreteria21/Iconos_Imagenes/delete4.png"));
+		btnModificar.setIcon(new ImageIcon("/home/ferc/git/SistemaFerreteria21/Iconos_Imagenes/Editar.png"));
 		
 		JButton btnNewButton_1 = new JButton("");
 		btnNewButton_1.addActionListener(new ActionListener() {
@@ -156,7 +153,16 @@ public class VistaProveedores extends JDialog {
 				updateTablaActionPerformed(e);
 			}
 		});
-		btnNewButton_1.setIcon(new ImageIcon("/home/ferc/git/SistemaFerreteria21/Iconos_Imagenes/refresh.png"));
+		
+		JButton btnEliminar = new JButton("");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				eliminarProveedorActionPerformed(e);
+			}
+		});
+		panel_4.add(btnEliminar);
+		btnEliminar.setIcon(new ImageIcon("/home/ferc/git/SistemaFerreteria21/Iconos_Imagenes/Eliminar.png"));
+		btnNewButton_1.setIcon(new ImageIcon("/home/ferc/git/SistemaFerreteria21/Iconos_Imagenes/refresh1.png"));
 		panel_4.add(btnNewButton_1);
 
 		JPanel panel_2 = new JPanel();
@@ -170,15 +176,8 @@ public class VistaProveedores extends JDialog {
 
 		tablaProveedores = new JTable();
 		scrollPane_1.setViewportView(tablaProveedores);
-
 		tablaProveedores.setModel(modeloTabla);
-		tablaProveedores.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-
-			public void valueChanged(ListSelectionEvent e) {
-				 dameDatosListSelection(e);
-			}
-
-		});
+		
 	}
 //INSERTAR UN PROVEEDOR
 
@@ -274,7 +273,19 @@ public class VistaProveedores extends JDialog {
 
 	}
 	
+	private void eliminarProveedorActionPerformed(ActionEvent e) {
+		
+		Proveedor proveedor = (Proveedor) modeloTabla.getValueAt(tablaProveedores.getSelectedRow(), 1);
+		
+		int d = JOptionPane.showConfirmDialog(null, "¿Desea eliminar un proveedor?");
+		
+		if(d==0) {
+			base.borrarProveedor(proveedor);			
+			LimpiarLista();
+			modeloTablaProveedores();
+		}
 	
+	}
 	private void editarVentanaActionPerformed(ActionEvent e) {
 		
 		Proveedor proveedor = (Proveedor) modeloTabla.getValueAt(tablaProveedores.getSelectedRow(), 1);
@@ -294,17 +305,7 @@ public class VistaProveedores extends JDialog {
 	     
 	}
 
-	// CLICK EN TABLA
-	private void dameDatosListSelection(ListSelectionEvent e) {
 
-		if (!e.getValueIsAdjusting() && (tablaProveedores.getSelectedRow() >= 0)) {
-
-			Proveedor proveedor = (Proveedor) modeloTabla.getValueAt(tablaProveedores.getSelectedRow(), 1);
-			
-
-		}
-
-	}
 	
 	private void txtDescKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescKeyReleased
 
@@ -343,7 +344,7 @@ public class VistaProveedores extends JDialog {
             	modeloTabla.removeRow(i);
             }
         }
-    }
+	}
 }
 
 /* NO USAR MAS DE UN MODELO EN UNA TABLA */
