@@ -52,24 +52,14 @@ import java.awt.GridLayout;
 import javax.swing.JTabbedPane;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
-import javax.swing.JToolBar;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.KeyAdapter;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
-import javax.swing.BoxLayout;
 
 public class VistaProveedores extends JDialog {
 	private DefaultComboBoxModel modeloProveedor;
 	private Controlador base = new Controlador();
-	private ArrayList<Proveedor> listaProveedores;
-	private Proveedor proveedor;
-	private JScrollPane scrollPane;
 	private JTable tablaProveedores;
-	private Connection conn = null;
-	private Conexion con;
-	private DefaultTableModel modeloTablaProveedores = new DefaultTableModel();
 	private DefaultTableModel modeloTabla = new DefaultTableModel() {
 		@Override
 		public final boolean isCellEditable(int row, int column) {
@@ -91,7 +81,7 @@ public class VistaProveedores extends JDialog {
 
 	public void initComponent() {
 
-		con = new Conexion();
+		new Conexion();
 		JPanel panel = new JPanel();
 		panel.setBounds(12, 0, 676, 358);
 		getContentPane().add(panel);

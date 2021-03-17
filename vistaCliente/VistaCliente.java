@@ -12,7 +12,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.Clientes;
-import vistaVentas.vistaFrame;
+import vistaVentas.VistaVentas;
 
 /**
  *
@@ -21,7 +21,7 @@ import vistaVentas.vistaFrame;
 public class VistaCliente extends javax.swing.JDialog {
     
     Controlador base = new Controlador();
-    vistaFrame vistaVentas = new vistaFrame();
+    VistaVentas vistaVentas = new VistaVentas();
     /**
      * Creates new form vistaNuevoCliente
      */

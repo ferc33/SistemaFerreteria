@@ -9,22 +9,23 @@ import com.formdev.flatlaf.intellijthemes.FlatArcIJTheme;
 import com.formdev.flatlaf.intellijthemes.FlatCyanLightIJTheme;
 import com.formdev.flatlaf.intellijthemes.FlatGruvboxDarkHardIJTheme;
 import com.formdev.flatlaf.intellijthemes.FlatMaterialDesignDarkIJTheme;
-import com.formdev.flatlaf.intellijthemes.FlatMaterialDesignDarkIJTheme;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatAtomOneDarkContrastIJTheme;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatAtomOneDarkIJTheme;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatLightOwlContrastIJTheme;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMaterialDarkerIJTheme;
-
+import singleton.VistaArticulosSingleton;
 import mdlaf.MaterialLookAndFeel;
 import modelo.Ventas;
+import singleton.VistaCategoriaSigleton;
+import singleton.VistaProveedoresSigleton;
 import vistaActualizacion.VistaActualizacion;
 import vistaCategoria.VistaCategoria;
 import vistaDolar.VistaDolar;
-
+import singleton.VistaVentasSingleton;
 import vistaInventario.MarcoArticulo;
 import vistaProveedores.VistaProveedores;
 import vistaReportes.VistaReportes;
-import vistaVentas.vistaFrame;
+import vistaVentas.VistaVentas;
 
 import javax.swing.*;
 import java.text.ParseException;
@@ -115,11 +116,7 @@ public class Principal extends javax.swing.JFrame {
         mntmProveedores.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         	
-    		        VistaProveedores vistaD = new VistaProveedores();
-    		        vistaD.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-    		        vistaD.setVisible(true);
-    		        vistaD.setAlwaysOnTop(false);
-    		        vistaD.setLocationRelativeTo(new MarcoArticulo());
+        		abrirVentanaProveedoresActionPerformed(e);
     			
     			}
         	
@@ -186,22 +183,10 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(menuTemas);
 
-        Dolar.setText("Preferencias");
-        
-        Dolar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DolarActionPerformed(evt);
-            }
-        });
-
+       
         btnDolar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, 0));
         btnDolar.setText("Dolar");
-        btnDolar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDolarActionPerformed(evt);
-            }
-        });
-        Dolar.add(btnDolar);
+        
 
         btnSalir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, 0));
         btnSalir.setText("Salir");
@@ -221,18 +206,30 @@ public class Principal extends javax.swing.JFrame {
     
     private void btnArticulosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnArticulosActionPerformed
              
-    	 articulos = new MarcoArticulo();
-    	articulos.setLocationRelativeTo(null);
-    	articulos.setDefaultCloseOperation(articulos.DISPOSE_ON_CLOSE);
-    	articulos.setVisible(true);
+		try {
+
+			JFrame Articulo = VistaArticulosSingleton.getInstance();
+
+			Articulo.setVisible(true);
+			Articulo.setLocationRelativeTo(null);
+			Articulo.setDefaultCloseOperation(Articulo.DISPOSE_ON_CLOSE);
+		} catch (Exception f) {
+			f.printStackTrace();
+		}
     }//GEN-LAST:event_btnArticulosActionPerformed
 
     private void btnVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVentasActionPerformed
    
-    	ventas = new vistaFrame();
-    	ventas.setLocationRelativeTo(null);
-    	ventas.setDefaultCloseOperation(articulos.DISPOSE_ON_CLOSE);
-    	ventas.setVisible(true);
+    	try {
+
+			JFrame Venta = VistaVentasSingleton.getInstance();
+
+			Venta.setVisible(true);
+			Venta.setLocationRelativeTo(null);
+			Venta.setDefaultCloseOperation(Venta.DISPOSE_ON_CLOSE);
+		} catch (Exception f) {
+			f.printStackTrace();
+		}
      
     }//GEN-LAST:event_btnVentasActionPerformed
 
@@ -277,11 +274,20 @@ public class Principal extends javax.swing.JFrame {
       
     }//GEN-LAST:event_temaLightActionPerformed
 
-    private void DolarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DolarActionPerformed
-        
-     
-    }//GEN-LAST:event_DolarActionPerformed
+	// ABRIR VENTANA DE PROVEEDORES
+	private void abrirVentanaProveedoresActionPerformed(ActionEvent e) {
 
+		try {
+
+			JDialog Proveedor = VistaProveedoresSigleton.getInstance();
+
+			Proveedor.setVisible(true);
+
+		} catch (Exception f) {
+			f.printStackTrace();
+		}
+
+	}
     private void btnDolarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDolarActionPerformed
         VistaDolar vistaD = new VistaDolar();
         vistaD.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -328,6 +334,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem temaDark;
     private javax.swing.JMenuItem temaLight;
     private MarcoArticulo articulos;    
-    private vistaFrame ventas;
+    private VistaVentas ventas;
     private JLabel lblNewLabel;
 }

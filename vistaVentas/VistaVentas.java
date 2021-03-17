@@ -65,7 +65,7 @@ import java.awt.GridLayout;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-public class vistaFrame extends javax.swing.JFrame {
+public class VistaVentas extends javax.swing.JFrame {
 
     DefaultTableModel modeloTablaProductosArriba = new DefaultTableModel() {
 
@@ -103,7 +103,7 @@ public class vistaFrame extends javax.swing.JFrame {
     private double importeTotal = 0;
     private DecimalFormat df = new DecimalFormat("0.00");
 
-    public vistaFrame() {
+    public VistaVentas() {
     	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
         initComponents();
         Conexion = new Conexion();   
