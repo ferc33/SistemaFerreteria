@@ -7,8 +7,6 @@ import modelo.Proveedor;
 import modelo.Ventas;
 import modelo.innerjoin.Productos;
 import vistaActualizacion.VistaActualizacion;
-import vistaProveedores.VistaProveedores;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -34,6 +32,7 @@ import modelo.Conexion;
 import modelo.Dolar;
 import modelo.Presupuesto;
 import modelo.Usuarios;
+import modelo.Producto;
 
 public class Controlador {
 
@@ -212,7 +211,7 @@ public class Controlador {
 
 			prep = Conexion.prepareStatement(
 					"UPDATE `db-sistema`.CAT_PROVEEDORES SET NOM_PROVEEDOR = ?, DIR_PROVEEDOR=?,TEL_PROVEEDOR=?,"
-					+ "EMAIL_PROVEEDOR = ? WHERE ID_PROVEEDOR = ?");
+							+ "EMAIL_PROVEEDOR = ? WHERE ID_PROVEEDOR = ?");
 
 			prep.setString(1, proveedor.getNomProveedor());
 			prep.setString(2, proveedor.getDirProveedor());
@@ -370,6 +369,7 @@ public class Controlador {
 
 	}
 
+//OBTIENE DATOS DE LA TABLA PRODUCTOS
 	public ArrayList<Productos> dameProductoDeLaTabla() {
 
 		ArrayList<Productos> listaProductos = new ArrayList<Productos>();
@@ -406,6 +406,7 @@ public class Controlador {
 
 	}
 
+//OBTIENE LOS DATOS PARA LLENAR LA TABLA PRODUCTOS
 	public ArrayList<Producto> obtenerProductos() {
 
 		ArrayList<Producto> listaProductos = new ArrayList<Producto>();
@@ -453,8 +454,58 @@ public class Controlador {
 			ex.printStackTrace();
 
 		}
-		System.out.println(listaProductos);
+
 		return listaProductos;
+
+	}
+
+	public ArrayList<Producto> dameProductosBD() {
+
+		ArrayList<Producto> listaProductosBD = new ArrayList<Producto>();
+
+		try {
+
+			prep = Conexion.prepareStatement("SELECT * FROM `db-sistema`.CAT_PRODUCTOS");
+
+			rs = prep.executeQuery();
+
+			while (rs.next()) {
+
+				int idProducto = rs.getInt("ID_PRODUCTO");
+				String idprod = rs.getString("ID_PROD");
+				String nomprod = rs.getString("NOM_PROD");
+				String idProveedorProd = rs.getString("ID_PROVEEDOR_PROD");
+				int stock = rs.getInt("STOCK_PROD");
+				double precioVenta = rs.getDouble("PRECIO_VENTA_PROD");
+				double precioCompra = rs.getDouble("PRECIO_COMPRA_PROD");
+				int existencia = rs.getInt("EXISTENCIA_PROD");
+				int idCategoria = rs.getInt("ID_CATEGORIA");
+				int idProveedor = rs.getInt("ID_PROVEEDOR");
+				double iva = rs.getDouble("IVA");
+				double dolar = rs.getDouble("DOLAR");
+				double bon1 = rs.getDouble("BON1");
+				double bon2 = rs.getDouble("BON2");
+				double bon3 = rs.getDouble("BON3");
+				double bon4 = rs.getDouble("BON4");
+				double flete = rs.getDouble("FLETE");
+				double ganancia = rs.getDouble("GANANCIA");
+
+				
+				
+				Producto producto = new Producto(idProducto, idprod, nomprod, stock, idProveedorProd, precioCompra,	precioVenta,
+						existencia, idCategoria, idProveedor, iva, bon1, bon2, bon3, bon4, flete,ganancia);
+
+				listaProductosBD.add(producto);
+
+		
+				
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+
+		}
+
+		return listaProductosBD;
 
 	}
 
@@ -718,6 +769,43 @@ public class Controlador {
 		return proveedor;
 
 	}
+	
+	public String dameProveedor(Integer idProveedor) {
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Conexion conn = new Conexion();
+		Connection con = conn.getConexion();
+
+		ArrayList<Proveedor> proveedor = new ArrayList<Proveedor>();
+
+		Proveedor prov = null;
+
+		try {
+
+			String sql = "SELECT * FROM `db-sistema`.CAT_PROVEEDORES";
+
+			ps = con.prepareStatement(sql);
+			rs = ps.executeQuery();
+		
+			while (rs.next()) {
+				prov = new Proveedor();
+				prov.setIdProveedor(rs.getInt("ID_PROVEEDOR"));
+				prov.setNomProveedor(rs.getString("NOM_PROVEEDOR"));
+			
+				proveedor.add(prov);
+			}
+
+			rs.close();
+
+		} catch (Exception e) {
+			System.err.print(e.toString());
+		}
+		// devuelve el vector
+
+		return prov.getNomProveedor();
+
+	}
 
 	public Vector<Proveedor> dameProveedoresTabla() {
 
@@ -827,7 +915,44 @@ public class Controlador {
 		return categoria;
 
 	}
-	//LLENA EL COMBOBOX
+	
+	public String dameCategoria(Integer idCategoria) {
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Conexion conn = new Conexion();
+		Connection con = conn.getConexion();
+
+		ArrayList<Categoria> categoria = new ArrayList<Categoria>();
+
+		Categoria cat = null;
+
+		try {
+
+			String sql = "SELECT * FROM CAT_CATEGORIA WHERE ID_CATEGORIA =" + idCategoria;
+			ps = con.prepareStatement(sql);
+			rs = ps.executeQuery();
+		
+			while (rs.next()) {
+				cat = new Categoria();
+				cat.setIdCategoria(rs.getInt("ID_CATEGORIA"));
+				cat.setNomCategoria(rs.getString("NOM_CATEGORIA"));
+				categoria.add(cat);
+			}
+
+			rs.close();
+
+		} catch (Exception e) {
+			 System.err.print(e.toString());
+		}
+
+	
+		return cat.getNomCategoria();
+
+	}
+	
+
+	// LLENA EL COMBOBOX
 	public Vector<Categoria> dameCategorias() {
 
 		PreparedStatement ps = null;
@@ -851,7 +976,7 @@ public class Controlador {
 			categoria.add(cat);
 			// llena el combobox de categorias
 			while (rs.next()) {
-				
+
 				cat = new Categoria();
 				cat.setIdCategoria(rs.getInt("ID_CATEGORIA"));
 				cat.setNomCategoria(rs.getString("NOM_CATEGORIA"));
@@ -888,7 +1013,7 @@ public class Controlador {
 
 				proveedor = new Proveedor(id, nomP, dir, email, tel);
 				listaProveedor.add(proveedor);
-				System.out.println(listaProveedor);
+
 			}
 
 		} catch (Exception e) {
@@ -903,7 +1028,8 @@ public class Controlador {
 	public ArrayList<Categoria> obtenerCategoria(String criterio) {
 
 		ArrayList<Categoria> ListaCategoria = new ArrayList<Categoria>();
-		Categoria categoria;;
+		Categoria categoria;
+		;
 		try {
 
 			String sql = "SELECT * FROM `db-sistema`.CAT_CATEGORIA WHERE NOM_CATEGORIA  LIKE  '" + criterio
@@ -914,11 +1040,10 @@ public class Controlador {
 			while (rs.next()) {
 				int id = rs.getInt("ID_CATEGORIA");
 				String nomP = rs.getString("NOM_CATEGORIA");
-			
 
 				categoria = new Categoria(id, nomP);
 				ListaCategoria.add(categoria);
-			
+
 			}
 
 		} catch (Exception e) {
@@ -929,7 +1054,7 @@ public class Controlador {
 		return ListaCategoria;
 
 	}
-	
+
 //DEVUELVE LOS PROVEEDORES QUE SELECCIONO DESDE EL COMBOBOX
 	public ArrayList<Proveedor> obtenerProveedorPorCriterio(String criterio) {
 
@@ -959,8 +1084,6 @@ public class Controlador {
 
 	}
 
-	
-	
 	public ArrayList<Producto> obtenerProductosPorCriterio(String criterio) {
 
 		ArrayList<Producto> listaProductos = new ArrayList<Producto>();
@@ -1004,7 +1127,7 @@ public class Controlador {
 		return listaProductos;
 
 	}
-	
+
 	public ArrayList<Categoria> dameCategoriasTabla() {
 
 		PreparedStatement ps = null;
@@ -1020,9 +1143,9 @@ public class Controlador {
 					+ " INNER JOIN CAT_PROVEEDORES ON CAT_CATEGORIA.ID_PROVEEDOR = CAT_PROVEEDORES.ID_PROVEEDOR ";
 			ps = con.prepareStatement(sql);
 			rs = ps.executeQuery();
-		
+
 			while (rs.next()) {
-				
+
 				Categoria cat = new Categoria();
 				cat.setIdCategoria(rs.getInt("ID_CATEGORIA"));
 				cat.setNomCategoria(rs.getString("NOM_CATEGORIA"));
@@ -1225,22 +1348,20 @@ public class Controlador {
 
 		try {
 
-			prep = Conexion.prepareStatement("UPDATE `db-sistema`.CAT_CATEGORIA SET ID_PROVEEDOR = ?,NOM_CATEGORIA = ? WHERE ID_CATEGORIA=?");
+			prep = Conexion.prepareStatement(
+					"UPDATE `db-sistema`.CAT_CATEGORIA SET ID_PROVEEDOR = ?,NOM_CATEGORIA = ? WHERE ID_CATEGORIA=?");
 
 			prep.setInt(1, categoria.getIdProveedor());
 			prep.setString(2, categoria.getNomCategoria());
 			prep.setInt(3, categoria.getIdCategoria());
-			
-		
+
 			prep.executeUpdate();
 
 		} catch (SQLException ex) {
 			ex.printStackTrace();
-		} 
+		}
 	}
 
-	
-	
 	public void borrarArticulo(Producto producto) {
 
 		try {
@@ -1255,22 +1376,22 @@ public class Controlador {
 		}
 
 	}
-	
-public void eliminarCategoria(Categoria categoria) {
-	
-	try {
 
-		prep = Conexion.prepareStatement("DELETE FROM `db-sistema`.CAT_CATEGORIA WHERE ID_CATEGORIA=?");
-		prep.setInt(1, categoria.getIdCategoria());
-		prep.executeQuery();
+	public void eliminarCategoria(Categoria categoria) {
 
-	} catch (SQLException ex) {
-		ex.printStackTrace();
+		try {
+
+			prep = Conexion.prepareStatement("DELETE FROM `db-sistema`.CAT_CATEGORIA WHERE ID_CATEGORIA=?");
+			prep.setInt(1, categoria.getIdCategoria());
+			prep.executeQuery();
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+
+		}
 
 	}
-	
-}
-	
+
 	public void borrarProveedor(Proveedor proveedor) {
 
 		try {

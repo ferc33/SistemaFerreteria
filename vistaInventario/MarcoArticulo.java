@@ -18,8 +18,6 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Vector;
-
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -51,12 +49,10 @@ import modelo.Categoria;
 import modelo.Conexion;
 import modelo.Producto;
 import modelo.Proveedor;
-import vistaCategoria.VistaCategoria;
-import vistaDolar.VistaDolar;
+
 import vistaProveedores.VistaProveedores;
 import javax.swing.SwingConstants;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
+
 import java.awt.GridLayout;
 
 public class MarcoArticulo extends JFrame {
@@ -91,8 +87,6 @@ public class MarcoArticulo extends JFrame {
 	private File imgArticleFile;
 	private JTextField txtNombre;
 	private JTextField txtClaveProveedor;
-	private JComboBox comboBoxProveedores;
-	private JComboBox comboBoxCategoria;
 	private JTextField campoBuscarTodo;
 	private JScrollPane jScrollPane4;
 	private ButtonGroup grupo_botones;
@@ -114,7 +108,14 @@ public class MarcoArticulo extends JFrame {
 	private JPanel panel_1;
 	private JTable tablaProductos;
 	private VistaProveedores vistaProve;
-
+	private JButton btnImportar;
+	private JLabel imgLabel;
+	private JComboBox comboBoxCategoria_1;
+	private JTextField txtIdProduct;
+	private JTextField txtProveedor;
+	private JTextField txtCategoria;
+	private JLabel lblProveedor;
+	private JLabel lblCategoria ;
 	/**
 	 * Launch the application.
 	 */
@@ -148,6 +149,8 @@ public class MarcoArticulo extends JFrame {
 		cargarColumnas();
 		cargarModeloTabla();
 
+		
+
 		setSize(1000, 670);
 
 		JLabel lblCosto_6_1 = new JLabel("Codigo Art");
@@ -155,55 +158,21 @@ public class MarcoArticulo extends JFrame {
 		lblCosto_6_1.setBounds(250, 36, 125, 35);
 		getContentPane().add(lblCosto_6_1);
 
-		comboBoxCategoria = new JComboBox();
-		comboBoxCategoria.setBounds(33, 324, 206, 50);
-
-		getContentPane().add(comboBoxCategoria);
-
 		// Titled borders
 		TitledBorder title;
 		title = BorderFactory.createTitledBorder("Rubro");
-		comboBoxCategoria.setBorder(title);
-
-		comboBoxProveedores = new JComboBox();
-
-		comboBoxProveedores.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-
-				if (e.getStateChange() == ItemEvent.SELECTED) {
-
-					Proveedor prove = (Proveedor) comboBoxProveedores.getSelectedItem();
-					// GUARDAMOS LO QUE OBTENEMOS DE LA BASE DE DATOS EN UN MODELO
-					DefaultComboBoxModel modCategoria = new DefaultComboBoxModel(
-							base.dameCategorias(prove.getIdProveedor()));
-					// MOSTRAMOS EL MODELO EN EL COMBOBOX
-					comboBoxCategoria.setModel(modCategoria);
-				}
-
-			}
-		});
-
-		comboBoxProveedores.setBounds(327, 324, 196, 50);
-		cargarModeloProv();
-		getContentPane().add(comboBoxProveedores);
 
 		TitledBorder title2;
 		title2 = BorderFactory.createTitledBorder("Proveedores");
-		comboBoxProveedores.setBorder(title2);
 		txtIdProduct = new JTextField();
 		txtIdProduct.setBounds(526, 421, 114, 21);
 		getContentPane().add(txtIdProduct);
 		txtIdProduct.setColumns(10);
 
 		txtProveedor = new JTextField();
-		txtProveedor.setBounds(327, 289, 195, 26);
+		txtProveedor.setBounds(317, 324, 32, 26);
 		getContentPane().add(txtProveedor);
 		txtProveedor.setColumns(10);
-
-		txtCategoria = new JTextField();
-		txtCategoria.setColumns(10);
-		txtCategoria.setBounds(32, 290, 207, 26);
-		getContentPane().add(txtCategoria);
 
 		JPanel panel = new JPanel();
 		panel.setBounds(595, 359, 393, 53);
@@ -254,21 +223,35 @@ public class MarcoArticulo extends JFrame {
 			}
 		});
 		button.setIcon(new ImageIcon(MarcoArticulo.class.getResource("/Iconos_Imagenes/zoom_iwwn.png")));
-		button.setBounds(530, 338, 41, 36);
+		button.setBounds(469, 324, 41, 26);
 		getContentPane().add(button);
 
-		JButton button_1 = new JButton("");
-		button_1.addActionListener(new ActionListener() {
+		lblProveedor = new JLabel("Proveedor");
+		lblProveedor.setHorizontalAlignment(SwingConstants.CENTER);
+		lblProveedor.setBounds(356, 327, 105, 19);
+		getContentPane().add(lblProveedor);
+
+		txtCategoria = new JTextField();
+		txtCategoria.setBounds(317, 279, 31, 26);
+		getContentPane().add(txtCategoria);
+		txtCategoria.setColumns(10);
+
+		JButton btnCategoria = new JButton("");
+		btnCategoria.setBounds(468, 279, 41, 26);
+		getContentPane().add(btnCategoria);
+		btnCategoria.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				abrirVentanaCategoriaActionPerformed(e);
-				
-			
+
 			}
 		});
-		button_1.setIcon(new ImageIcon(MarcoArticulo.class.getResource("/Iconos_Imagenes/zoom_iwwn.png")));
-		button_1.setBounds(250, 338, 41, 36);
-		getContentPane().add(button_1);
+		btnCategoria.setIcon(new ImageIcon(MarcoArticulo.class.getResource("/Iconos_Imagenes/zoom_iwwn.png")));
+
+		 lblCategoria = new JLabel("Categoria");
+		lblCategoria.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCategoria.setBounds(357, 283, 104, 17);
+		getContentPane().add(lblCategoria);
 		txtIdProduct.setVisible(false);
 	}
 
@@ -277,6 +260,7 @@ public class MarcoArticulo extends JFrame {
 
 		conexion = new Conexion();
 		getContentPane().setLayout(null);
+		
 		lblCosto = new JLabel("Costo");
 		lblCosto.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCosto.setBounds(0, 68, 125, 35);
@@ -588,11 +572,11 @@ public class MarcoArticulo extends JFrame {
 
 						if (!event.getValueIsAdjusting() && (tablaProductos.getSelectedRow() >= 0)) {
 
-							Producto producto = (Producto) modeloTabla.getValueAt(tablaProductos.getSelectedRow(), 1);
+							Producto producto = (Producto) modeloTabla.getValueAt(tablaProductos.getSelectedRow(), 2);
 
 							txtIdProduct.setText(String.valueOf(producto.getIdProducto1()));
 							txtIdProducto.setText(String.valueOf(producto.getIdProducto()));
-							txtNombre.setText(producto.getNomProducto().toUpperCase());
+							txtNombre.setText(String.valueOf(producto.getNomProducto().toUpperCase()));
 							campoStock.setText(String.valueOf(producto.getStockProducto()));
 							txtPrecioVenta.setText(String.valueOf(producto.getPrecioVentaProducto()));
 							txtCosto.setText(String.valueOf(producto.getPrecioCompraProducto()));
@@ -604,19 +588,23 @@ public class MarcoArticulo extends JFrame {
 							txtbon4.setText(String.valueOf(producto.getBon4()));
 							txtFlete.setText(String.valueOf(producto.getFlete()));
 							txtGanancia.setText(String.valueOf(producto.getGanancia()));
-							txtProveedor.setText(String.valueOf(producto.getNomProveedor()));
-							txtCategoria.setText(String.valueOf(producto.getNomCategoria()));
-							txtProveedor.setEnabled(false);
-							txtCategoria.setEnabled(false);
-			
+							txtCategoria.setText(String.valueOf(producto.getIdCategoria()));
+							txtProveedor.setText(String.valueOf(producto.getIdProveedor()));
+					
+							int categoria = Integer.parseInt(txtCategoria.getText());
+							int proveedor = Integer.parseInt(txtProveedor.getText());
 
+							lblCategoria.setText(base.dameCategoria(categoria));
+							lblProveedor.setText(base.dameProveedor(proveedor));
 							desplegarFoto(producto);
 							productoSeleccionado = producto;
+
 						}
 					}
 
 				});
 
+		
 	}
 
 	public void desplegarFoto(Producto prod) {
@@ -665,68 +653,38 @@ public class MarcoArticulo extends JFrame {
 
 	}
 
-	private void addProveedores() {
-
-		modeloProveedores.addElement(proveedor);
-		comboBoxProveedores.setModel(modeloProveedores);
-		modeloProveedores.setSelectedItem(proveedor);
-
-	}
-
 	private void cargarColumnas() {
-
+		modeloTabla.addColumn("id");
 		modeloTabla.addColumn("codigo");
 		modeloTabla.addColumn("nombre");
 		modeloTabla.addColumn("c.prov");
 		modeloTabla.addColumn("venta");
 		modeloTabla.addColumn("stock");
-		modeloTabla.addColumn("Categoria");
-		modeloTabla.addColumn("Proveedor");
 
+		TableColumn Coldi = tablaProductos.getColumn("id");
 		TableColumn ColCodigo = tablaProductos.getColumn("codigo");
 		TableColumn ColNombre = tablaProductos.getColumn("nombre");
 		TableColumn ColProve = tablaProductos.getColumn("c.prov");
-		TableColumn Colcant = tablaProductos.getColumn("venta");
-		TableColumn ColVen = tablaProductos.getColumn("stock");
-		TableColumn ColCat = tablaProductos.getColumn("Categoria");
-		TableColumn ColPro = tablaProductos.getColumn("Proveedor");
+		TableColumn ColVent = tablaProductos.getColumn("venta");
+		TableColumn ColStock = tablaProductos.getColumn("stock");
+
+		Coldi.setMaxWidth(80);
+		Coldi.setMinWidth(10);
 
 		ColCodigo.setMaxWidth(80);
 		ColCodigo.setMinWidth(10);
 
 		ColNombre.setMinWidth(200);
-		ColNombre.setMaxWidth(350);
+		ColNombre.setMaxWidth(450);
 
-		ColProve.setMaxWidth(150);
+		ColProve.setMaxWidth(165);
 		ColProve.setMinWidth(50);
 
-		Colcant.setMaxWidth(90);
-		Colcant.setMinWidth(90);
+		ColVent.setMaxWidth(160);
+		ColVent.setMinWidth(90);
 
-		ColVen.setMaxWidth(80);
-		ColVen.setMinWidth(10);
-
-		ColCat.setMaxWidth(100);
-		ColCat.setMinWidth(10);
-
-		ColPro.setMaxWidth(100);
-		ColPro.setMinWidth(10);
-
-	}
-
-	private void cargarModeloCat() {
-
-		categoria = new Categoria();
-		modeloCategorias = new DefaultComboBoxModel(base.dameCategorias());
-		comboBoxCategoria.setModel(modeloCategorias);
-
-	}
-
-	public void cargarModeloProv() {
-
-		proveedor = new Proveedor();
-		modeloProveedores = new DefaultComboBoxModel(base.dameProveedores());
-		comboBoxProveedores.setModel(modeloProveedores);
+		ColStock.setMaxWidth(120);
+		ColStock.setMinWidth(10);
 
 	}
 
@@ -738,37 +696,28 @@ public class MarcoArticulo extends JFrame {
 		}
 	};
 
-	private JButton btnImportar;
-	private JLabel imgLabel;
-	private JComboBox comboBoxCategoria_1;
-	private JTextField txtIdProduct;
-	private JTextField txtProveedor;
-	private JTextField txtCategoria;
-
 	public void cargarModeloTabla() {
 
-		ArrayList<Producto> listaProducto = base.obtenerProductos();
+		ArrayList<Producto> listaProducto = base.dameProductosBD();
 		int numeroProducto = listaProducto.size();
-		modeloTabla.setNumRows(numeroProducto);
 
+		modeloTabla.setNumRows(numeroProducto);
+		Producto producto = new Producto();
 		for (int i = 0; i < numeroProducto; i++) {
 
-			Producto producto = listaProducto.get(i);
-			String nomBre = producto.getNomProducto();
+			producto = listaProducto.get(i);
+			int id = producto.getIdProducto1();
 			String idClave = producto.getIdProducto();
 			String idFabricaProd = producto.getIdProveedorProducto();
 			Double pventa = producto.getPrecioVentaProducto();
 			int exis = producto.getStockProducto();
-			String nomProveedor = producto.getNomProveedor();
-			String nomCategoria = producto.getNomCategoria();
 
-			modeloTabla.setValueAt(idClave, i, 0);
-			modeloTabla.setValueAt(producto, i, 1);
-			modeloTabla.setValueAt(idFabricaProd, i, 2);
-			modeloTabla.setValueAt(pventa, i, 3);
-			modeloTabla.setValueAt(exis, i, 4);
-			modeloTabla.setValueAt(nomCategoria, i, 5);
-			modeloTabla.setValueAt(nomProveedor, i, 6);
+			modeloTabla.setValueAt(id, i, 0);
+			modeloTabla.setValueAt(idClave, i, 1);
+			modeloTabla.setValueAt(producto, i, 2);
+			modeloTabla.setValueAt(idFabricaProd, i, 3);
+			modeloTabla.setValueAt(pventa, i, 4);
+			modeloTabla.setValueAt(exis, i, 5);
 
 		}
 
@@ -783,14 +732,14 @@ public class MarcoArticulo extends JFrame {
 
 		}
 	}
-	
-	//SINGLETON CATEGORIA
+
+	// SINGLETON CATEGORIA
 	private void abrirVentanaCategoriaActionPerformed(ActionEvent e) {
 
 		try {
 
 			JDialog categoria = VistaCategoriaSigleton.getInstance();
-
+			categoria.setLocationRelativeTo(null);
 			categoria.setVisible(true);
 
 		} catch (Exception f) {
@@ -799,13 +748,13 @@ public class MarcoArticulo extends JFrame {
 
 	}
 
-	//SINGLETON CATEGORIA
+	// SINGLETON CATEGORIA
 	private void abrirVentanaProveedoresActionPerformed(ActionEvent e) {
 
 		try {
 
 			JDialog Proveedor = VistaProveedoresSigleton.getInstance();
-
+			Proveedor.setLocationRelativeTo(null);
 			Proveedor.setVisible(true);
 
 		} catch (Exception f) {
@@ -981,13 +930,13 @@ public class MarcoArticulo extends JFrame {
 			double flete = Double.parseDouble(txtFlete.getText());
 			double ganancia = Double.parseDouble(txtGanancia.getText());
 
-			Categoria cat = (Categoria) comboBoxCategoria.getSelectedItem();
-			Proveedor pro = (Proveedor) comboBoxProveedores.getSelectedItem();
+			int cat = Integer.parseInt(txtCategoria.getText());
+			int pro = Integer.parseInt(txtProveedor.getText());
 
 			if (imgArticleFile == null) {
 
 				Producto producto = new Producto(idprod, nombre, stock, codigoProveedor, null, pCosto, pVenta, pDolar,
-						0, cat.getIdCategoria(), pro.getIdProveedor(), iva, bon1, bon2, bon3, bon4, flete, ganancia);
+						0, cat, pro, iva, bon1, bon2, bon3, bon4, flete, ganancia);
 
 				base.insertarProducto(producto);
 
@@ -998,8 +947,7 @@ public class MarcoArticulo extends JFrame {
 			} else {
 
 				Producto producto = new Producto(idprod, nombre, stock, codigoProveedor, imgArticleFile, pCosto, pVenta,
-						pDolar, 0, cat.getIdCategoria(), pro.getIdProveedor(), iva, bon1, bon2, bon3, bon4, flete,
-						ganancia);
+						pDolar, 0, cat, pro, iva, bon1, bon2, bon3, bon4, flete, ganancia);
 				base.insertarProducto(producto);
 
 				JOptionPane.showMessageDialog(this,
@@ -1074,14 +1022,13 @@ public class MarcoArticulo extends JFrame {
 			double flete = Double.parseDouble(txtFlete.getText());
 			double ganancia = Double.parseDouble(txtGanancia.getText());
 
-			Proveedor proveedor = (Proveedor) comboBoxProveedores.getSelectedItem();
-			Categoria categoria = (Categoria) comboBoxCategoria.getSelectedItem();
+			int cat = Integer.parseInt(txtCategoria.getText());
+			int pro = Integer.parseInt(txtProveedor.getText());
 
 			if (imgArticleFile == null) {
 
 				Producto producto = new Producto(idProducto, id, nombre, stock, codigoProveedor, null, pCosto, pVenta,
-						pDolar, 0, categoria.getIdCategoria(), proveedor.getIdProveedor(), iva, bon1, bon2, bon3, bon4,
-						flete, ganancia);
+						pDolar, 0, cat, pro, iva, bon1, bon2, bon3, bon4, flete, ganancia);
 
 				base.actualizarProducto(producto, false);
 
@@ -1128,9 +1075,8 @@ public class MarcoArticulo extends JFrame {
 			double flete = Double.parseDouble(txtFlete.getText());
 			double ganancia = Double.parseDouble(txtGanancia.getText());
 			int existencia = Integer.parseInt(campoStock.getText());
-
-			Proveedor proveedor = (Proveedor) comboBoxProveedores.getSelectedItem();
-			Categoria categoria = (Categoria) comboBoxCategoria.getSelectedItem();
+			int cat = Integer.parseInt(txtCategoria.getText());
+			int pro = Integer.parseInt(txtProveedor.getText());
 
 			precioVenta = pCosto * (1 - (bon1 / 100)) * (1 - (bon2 / 100)) * ((1 - (bon3 / 100)) * (1 - (bon4 / 100))
 					* (1 + (flete / 100)) * (1 + (iva / 100)) * (1 + (ganancia / 100)));
@@ -1138,9 +1084,8 @@ public class MarcoArticulo extends JFrame {
 
 			if (imgArticleFile == null) {
 
-				Producto producto = new Producto(idProducto, id, nombre, stock, codigoProveedor, null, pCosto,
-						precioVenta, dolar, 0, categoria.getIdCategoria(), proveedor.getIdProveedor(), iva, bon1, bon2,
-						bon3, bon4, flete, ganancia);
+				Producto producto = new Producto(idProducto, id, nombre, existencia, codigoProveedor, null, pCosto,
+						precioVenta, dolar, 0, cat, pro, iva, bon1, bon2, bon3, bon4, flete, ganancia);
 
 				base.actualizarProducto(producto, false);
 
@@ -1151,7 +1096,7 @@ public class MarcoArticulo extends JFrame {
 			} else {
 
 				Producto producto = new Producto(idProducto, id, nombre, stock, codigoProveedor, imgArticleFile, pCosto,
-						precioVenta, dolar, 0, categoria.getIdCategoria(), proveedor.getIdProveedor(), iva, bon1, bon2,
+						precioVenta, dolar, 0, cat, pro, iva, bon1, bon2,
 						bon3, bon4, flete, ganancia);
 				base.actualizarProducto(producto, true);
 
@@ -1163,7 +1108,7 @@ public class MarcoArticulo extends JFrame {
 			}
 
 			Producto producto = new Producto(idProducto, id, nombre, stock, codigoProveedor, pCosto, precioVenta,
-					existencia, categoria.getIdCategoria(), proveedor.getIdProveedor(), iva, bon1, bon2, bon3, bon4,
+					existencia, cat, pro, iva, bon1, bon2, bon3, bon4,
 					flete, ganancia);
 
 			base.actualizarProducto(producto, false);
@@ -1176,8 +1121,6 @@ public class MarcoArticulo extends JFrame {
 		}
 	}
 
-
-	
 	private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {
 		actualizarArticulo();
 
