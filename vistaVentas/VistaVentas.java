@@ -262,7 +262,7 @@ public class VistaVentas extends javax.swing.JFrame {
             String idClave = producto.getIdProducto();
             String idFabricaProd = producto.getIdProveedorProducto();
             Double pventa = producto.getPrecioVentaProducto();
-            int stock = producto.getStockProducto();
+            double stock = producto.getStockProducto();
 
             modeloTablaProductosArriba.setValueAt(idClave, i, 0);
             modeloTablaProductosArriba.setValueAt(producto, i, 1);
@@ -700,7 +700,7 @@ public class VistaVentas extends javax.swing.JFrame {
                         String idClave = producto.getIdProducto();
                         String idFabricaProd = producto.getIdProveedorProducto();
                         Double pventa = producto.getPrecioVentaProducto();
-                        int stock = producto.getStockProducto();
+                        double stock = producto.getStockProducto();
 
                         modeloTablaProductosArriba.setValueAt(idClave, i, 0);
                         modeloTablaProductosArriba.setValueAt(producto.getNomProducto(), i, 1);
@@ -738,7 +738,7 @@ public class VistaVentas extends javax.swing.JFrame {
             String idClave = producto.getIdProducto();
             String idFabricaProd = producto.getIdProveedorProducto();
             Double pventa = producto.getPrecioVentaProducto();
-            int stock = producto.getStockProducto();
+            double stock = producto.getStockProducto();
 
             modeloTablaProductosArriba.setValueAt(idClave, i, 0);
             modeloTablaProductosArriba.setValueAt(producto, i, 1);
@@ -772,7 +772,7 @@ public class VistaVentas extends javax.swing.JFrame {
             String nomBre = producto.getNomProducto();
             String idFabricaProd = producto.getIdProveedorProducto();
             Double pventa = producto.getPrecioVentaProducto();
-            int stock = producto.getStockProducto();
+            double stock = producto.getStockProducto();
 
             modeloTablaProductosArriba.setValueAt(clave, i, 0);
             modeloTablaProductosArriba.setValueAt(producto, i, 1);

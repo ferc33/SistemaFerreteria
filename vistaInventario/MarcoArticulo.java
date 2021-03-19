@@ -3,6 +3,8 @@ package vistaInventario;
 import singleton.VistaCategoriaSigleton;
 import java.awt.BorderLayout;
 import singleton.VistaProveedoresSigleton;
+import vistaCategoria.VistaCategoria;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
@@ -57,7 +59,6 @@ import java.awt.GridLayout;
 
 public class MarcoArticulo extends JFrame {
 	private JPanel laminaP;
-	private JTextField textField;
 	private JTextField txtCosto;
 	private JTextField txtbon1;
 	private JTextField txtbon2;
@@ -90,56 +91,24 @@ public class MarcoArticulo extends JFrame {
 	private JTextField campoBuscarTodo;
 	private JScrollPane jScrollPane4;
 	private ButtonGroup grupo_botones;
-	private DefaultComboBoxModel modeloProveedores = null;
-	private DefaultComboBoxModel modeloCategorias = null;
 	private Controlador base = new Controlador();
-	private ArrayList<Categoria> listaCategorias;
-	private ArrayList<Proveedor> listaProveedores;
-	private Producto productoSeleccionado = null;
-	private Categoria categoriaSeleccionada = null;
-	private Proveedor proveedorSeleccionado = null;
-	private Connection conn = null;
-	private Conexion conexion = null;
 	private Categoria categoria = null;
 	private Proveedor proveedor = null;
-	private boolean Seleccion = false;
-	private DecimalFormat df = null;
-	private boolean estaActualizando;
 	private JPanel panel_1;
 	private JTable tablaProductos;
-	private VistaProveedores vistaProve;
 	private JButton btnImportar;
 	private JLabel imgLabel;
-	private JComboBox comboBoxCategoria_1;
 	private JTextField txtIdProduct;
-	private JTextField txtProveedor;
-	private JTextField txtCategoria;
-	private JLabel lblProveedor;
-	private JLabel lblCategoria ;
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-
-			public void run() {
-				try {
-					MarcoArticulo frame = new MarcoArticulo();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
+	public JLabel lblIdProveedor;
+	public  JLabel lblIdCategoria;
+	public JTextField txtCategoria;
+	public JTextField txtProveedor;
+	
 	public MarcoArticulo() {
 
+	
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		
 		laminaP = new JPanel();
 		laminaP.setBorder(new EmptyBorder(5, 5, 5, 5));
 		laminaP.setLayout(new BorderLayout(0, 0));
@@ -168,11 +137,6 @@ public class MarcoArticulo extends JFrame {
 		txtIdProduct.setBounds(526, 421, 114, 21);
 		getContentPane().add(txtIdProduct);
 		txtIdProduct.setColumns(10);
-
-		txtProveedor = new JTextField();
-		txtProveedor.setBounds(317, 324, 32, 26);
-		getContentPane().add(txtProveedor);
-		txtProveedor.setColumns(10);
 
 		JPanel panel = new JPanel();
 		panel.setBounds(595, 359, 393, 53);
@@ -226,16 +190,6 @@ public class MarcoArticulo extends JFrame {
 		button.setBounds(469, 324, 41, 26);
 		getContentPane().add(button);
 
-		lblProveedor = new JLabel("Proveedor");
-		lblProveedor.setHorizontalAlignment(SwingConstants.CENTER);
-		lblProveedor.setBounds(356, 327, 105, 19);
-		getContentPane().add(lblProveedor);
-
-		txtCategoria = new JTextField();
-		txtCategoria.setBounds(317, 279, 31, 26);
-		getContentPane().add(txtCategoria);
-		txtCategoria.setColumns(10);
-
 		JButton btnCategoria = new JButton("");
 		btnCategoria.setBounds(468, 279, 41, 26);
 		getContentPane().add(btnCategoria);
@@ -243,22 +197,40 @@ public class MarcoArticulo extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				abrirVentanaCategoriaActionPerformed(e);
-
+				
 			}
 		});
 		btnCategoria.setIcon(new ImageIcon(MarcoArticulo.class.getResource("/Iconos_Imagenes/zoom_iwwn.png")));
-
-		 lblCategoria = new JLabel("Categoria");
-		lblCategoria.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCategoria.setBounds(357, 283, 104, 17);
-		getContentPane().add(lblCategoria);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBounds(305, 279, 156, 23);
+		getContentPane().add(panel_2);
+		panel_2.setLayout(new BorderLayout(0, 0));
+		
+		lblIdCategoria = new JLabel("0");
+		panel_2.add(lblIdCategoria, BorderLayout.WEST);
+		
+		txtCategoria = new JTextField();
+		panel_2.add(txtCategoria, BorderLayout.CENTER);
+		txtCategoria.setColumns(10);
+				 
+				 JPanel panel_3 = new JPanel();
+				 panel_3.setBounds(305, 324, 154, 26);
+				 getContentPane().add(panel_3);
+				 		panel_3.setLayout(new BorderLayout(0, 0));
+				 		
+				 		lblIdProveedor = new JLabel("0");
+				 		panel_3.add(lblIdProveedor, BorderLayout.WEST);
+				 		
+				 		txtProveedor = new JTextField();
+				 		panel_3.add(txtProveedor, BorderLayout.CENTER);
+				 		txtProveedor.setColumns(10);
 		txtIdProduct.setVisible(false);
 	}
 
 	// INICIAR LOS COMPONENTESs
 	private void initComponents() {
-
-		conexion = new Conexion();
+		
 		getContentPane().setLayout(null);
 		
 		lblCosto = new JLabel("Costo");
@@ -588,27 +560,33 @@ public class MarcoArticulo extends JFrame {
 							txtbon4.setText(String.valueOf(producto.getBon4()));
 							txtFlete.setText(String.valueOf(producto.getFlete()));
 							txtGanancia.setText(String.valueOf(producto.getGanancia()));
-							txtCategoria.setText(String.valueOf(producto.getIdCategoria()));
-							txtProveedor.setText(String.valueOf(producto.getIdProveedor()));
+							lblIdProveedor.setText(String.valueOf(producto.getIdCategoria()));
+							lblIdCategoria.setText(String.valueOf(producto.getIdProveedor()));
 					
-							int categoria = Integer.parseInt(txtCategoria.getText());
-							int proveedor = Integer.parseInt(txtProveedor.getText());
+							int categoria = Integer.parseInt(lblIdProveedor.getText());
+							int proveedor = Integer.parseInt(lblIdCategoria.getText());
 
-							lblCategoria.setText(base.dameCategoria(categoria));
-							lblProveedor.setText(base.dameProveedor(proveedor));
+							txtCategoria.setText(base.dameCategoria(categoria));
+							txtProveedor.setText(base.dameProveedor(proveedor));
+							txtCategoria.setEnabled(false);
+							txtProveedor.setEnabled(false);
 							desplegarFoto(producto);
-							productoSeleccionado = producto;
+							
 
 						}
 					}
 
 				});
 
-		
+	
 	}
+	
+
+	
+	
 
 	public void desplegarFoto(Producto prod) {
-
+		
 		ImageIcon ImagenProducto = null;
 
 		try {
@@ -696,6 +674,8 @@ public class MarcoArticulo extends JFrame {
 		}
 	};
 
+
+
 	public void cargarModeloTabla() {
 
 		ArrayList<Producto> listaProducto = base.dameProductosBD();
@@ -710,7 +690,7 @@ public class MarcoArticulo extends JFrame {
 			String idClave = producto.getIdProducto();
 			String idFabricaProd = producto.getIdProveedorProducto();
 			Double pventa = producto.getPrecioVentaProducto();
-			int exis = producto.getStockProducto();
+			double exis = producto.getStockProducto();
 
 			modeloTabla.setValueAt(id, i, 0);
 			modeloTabla.setValueAt(idClave, i, 1);
@@ -736,17 +716,17 @@ public class MarcoArticulo extends JFrame {
 	// SINGLETON CATEGORIA
 	private void abrirVentanaCategoriaActionPerformed(ActionEvent e) {
 
-		try {
+	    try {
 
-			JDialog categoria = VistaCategoriaSigleton.getInstance();
-			categoria.setLocationRelativeTo(null);
-			categoria.setVisible(true);
+	      JFrame categoria = VistaCategoriaSigleton.getInstance();
+	      categoria.setLocationRelativeTo(null);
+	      categoria.setVisible(true);
 
-		} catch (Exception f) {
-			f.printStackTrace();
-		}
+	    } catch (Exception f) {
+	      f.printStackTrace();
+	    }
 
-	}
+	  }
 
 	// SINGLETON CATEGORIA
 	private void abrirVentanaProveedoresActionPerformed(ActionEvent e) {
@@ -806,7 +786,7 @@ public class MarcoArticulo extends JFrame {
 					String nomBre = producto.getNomProducto();
 					String idFabricaProd = producto.getIdProveedorProducto();
 					Double pventa = producto.getPrecioVentaProducto();
-					int exis = producto.getStockProducto();
+					double exis = producto.getStockProducto();
 
 					modeloTabla.setValueAt(clave, i, 0);
 					modeloTabla.setValueAt(producto, i, 1);
@@ -840,7 +820,7 @@ public class MarcoArticulo extends JFrame {
 						String nomBre = producto.getNomProducto();
 						String idFabricaProd = producto.getIdProveedorProducto();
 						Double pventa = producto.getPrecioVentaProducto();
-						int exis = producto.getStockProducto();
+						double exis = producto.getStockProducto();
 
 						modeloTabla.setValueAt(clave, i, 0);
 						modeloTabla.setValueAt(producto, i, 1);
@@ -875,7 +855,7 @@ public class MarcoArticulo extends JFrame {
 					String nomBre = producto.getNomProducto();
 					String idFabricaProd = producto.getIdProveedorProducto();
 					Double pventa = producto.getPrecioVentaProducto();
-					int exis = producto.getStockProducto();
+					double exis = producto.getStockProducto();
 
 					modeloTabla.setValueAt(clave, i, 0);
 					modeloTabla.setValueAt(producto, i, 1);
@@ -929,9 +909,8 @@ public class MarcoArticulo extends JFrame {
 			double bon4 = Double.parseDouble(txtbon4.getText());
 			double flete = Double.parseDouble(txtFlete.getText());
 			double ganancia = Double.parseDouble(txtGanancia.getText());
-
-			int cat = Integer.parseInt(txtCategoria.getText());
-			int pro = Integer.parseInt(txtProveedor.getText());
+			int cat = Integer.parseInt(lblIdProveedor.getText());
+			int pro = Integer.parseInt(lblIdCategoria.getText());
 
 			if (imgArticleFile == null) {
 
@@ -1022,8 +1001,8 @@ public class MarcoArticulo extends JFrame {
 			double flete = Double.parseDouble(txtFlete.getText());
 			double ganancia = Double.parseDouble(txtGanancia.getText());
 
-			int cat = Integer.parseInt(txtCategoria.getText());
-			int pro = Integer.parseInt(txtProveedor.getText());
+			int cat = Integer.parseInt(lblIdProveedor.getText());
+			int pro = Integer.parseInt(lblIdCategoria.getText());
 
 			if (imgArticleFile == null) {
 
@@ -1062,7 +1041,7 @@ public class MarcoArticulo extends JFrame {
 			int idProducto = Integer.parseInt(txtIdProduct.getText());
 			String id = txtIdProducto.getText();
 			String nombre = txtNombre.getText().toUpperCase();
-			int stock = Integer.parseInt(campoStock.getText());
+			double stock = Double.parseDouble(campoStock.getText());
 			String codigoProveedor = txtClaveProveedor.getText().toUpperCase();
 			double pCosto = Double.parseDouble(txtCosto.getText());
 			double precioVenta = Double.parseDouble(txtPrecioVenta.getText());
@@ -1074,9 +1053,9 @@ public class MarcoArticulo extends JFrame {
 			double bon4 = Double.parseDouble(txtbon4.getText());
 			double flete = Double.parseDouble(txtFlete.getText());
 			double ganancia = Double.parseDouble(txtGanancia.getText());
-			int existencia = Integer.parseInt(campoStock.getText());
-			int cat = Integer.parseInt(txtCategoria.getText());
-			int pro = Integer.parseInt(txtProveedor.getText());
+			double existencia = Double.parseDouble(campoStock.getText());
+			int cat = Integer.parseInt(lblIdProveedor.getText());
+			int pro = Integer.parseInt(lblIdCategoria.getText());
 
 			precioVenta = pCosto * (1 - (bon1 / 100)) * (1 - (bon2 / 100)) * ((1 - (bon3 / 100)) * (1 - (bon4 / 100))
 					* (1 + (flete / 100)) * (1 + (iva / 100)) * (1 + (ganancia / 100)));
@@ -1084,8 +1063,7 @@ public class MarcoArticulo extends JFrame {
 
 			if (imgArticleFile == null) {
 
-				Producto producto = new Producto(idProducto, id, nombre, existencia, codigoProveedor, null, pCosto,
-						precioVenta, dolar, 0, cat, pro, iva, bon1, bon2, bon3, bon4, flete, ganancia);
+				Producto producto = new Producto(idProducto,id,nombre,stock,codigoProveedor,null,pCosto,precioVenta,dolar,existencia,cat,pro,iva,bon1,bon2,bon3,bon4,flete,ganancia);
 
 				base.actualizarProducto(producto, false);
 
@@ -1096,22 +1074,12 @@ public class MarcoArticulo extends JFrame {
 			} else {
 
 				Producto producto = new Producto(idProducto, id, nombre, stock, codigoProveedor, imgArticleFile, pCosto,
-						precioVenta, dolar, 0, cat, pro, iva, bon1, bon2,
-						bon3, bon4, flete, ganancia);
+						precioVenta, dolar, 0, cat, pro, iva, bon1, bon2,	bon3, bon4, flete, ganancia);
 				base.actualizarProducto(producto, true);
-
-				JOptionPane.showMessageDialog(this,
-						"Se ha guardado con exito el articulo " + producto.getNomProducto());
 
 				cargarModeloTabla();
 
 			}
-
-			Producto producto = new Producto(idProducto, id, nombre, stock, codigoProveedor, pCosto, precioVenta,
-					existencia, cat, pro, iva, bon1, bon2, bon3, bon4,
-					flete, ganancia);
-
-			base.actualizarProducto(producto, false);
 
 			cargarModeloTabla();
 

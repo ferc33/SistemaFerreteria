@@ -131,7 +131,7 @@ public class Principal extends javax.swing.JFrame {
 		        vistaD.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		        vistaD.setVisible(true);
 		        vistaD.setAlwaysOnTop(false);
-		        vistaD.setLocationRelativeTo(new MarcoArticulo());
+		        
         	}
         });
         
@@ -139,12 +139,12 @@ public class Principal extends javax.swing.JFrame {
         mntmCategorias.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         							
-        		  VistaCategoria vistaD = new VistaCategoria();
+        		/*  VistaCategoria vistaD = new VistaCategoria();
 			        vistaD.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			        vistaD.setVisible(true);
 			        vistaD.setAlwaysOnTop(false);
 			        vistaD.setLocationRelativeTo(new MarcoArticulo());
-
+*/
         	}
         	
         });
@@ -336,4 +336,6 @@ public class Principal extends javax.swing.JFrame {
     private MarcoArticulo articulos;    
     private VistaVentas ventas;
     private JLabel lblNewLabel;
+    private JLabel id;
+    private JTextField nombre;
 }

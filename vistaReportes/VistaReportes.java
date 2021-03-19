@@ -45,6 +45,7 @@ public class VistaReportes extends JFrame {
 	private JComboBox comboBoxCategorias;
 	private JComboBox comboBoxProveedores;
 	private DefaultComboBoxModel modeloProveedor;
+	private DefaultComboBoxModel modeloCategoria;
 	private DefaultTableModel modeloTablaProveedores = new DefaultTableModel();
 	private DefaultTableModel modeloTabla = new DefaultTableModel() {
 		@Override
@@ -76,6 +77,7 @@ public class VistaReportes extends JFrame {
 	initComponent();
 	ColumnasDeTablaProveedores();
 	modeloComboBoxProveedores();
+	modeloComboBoxCategoria();
 	}
 	
 	public void initComponent() {
@@ -94,12 +96,12 @@ public class VistaReportes extends JFrame {
 		panel.setLayout(null);
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(0, 164, 590, 198);
+		panel_1.setBounds(0, 117, 590, 245);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 5, 578, 181);
+		scrollPane.setBounds(0, 12, 578, 174);
 		panel_1.add(scrollPane);
 		
 		tablaProveedores = new JTable();
@@ -117,26 +119,20 @@ public class VistaReportes extends JFrame {
 		panel.add(comboBoxProveedores);
 		
 		comboBoxCategorias = new JComboBox();
-		comboBoxCategorias.setBounds(12, 79, 206, 26);
+		comboBoxCategorias.setBounds(230, 18, 206, 26);
 		panel.add(comboBoxCategorias);
 		
-		JButton btnNewButton = new JButton("Imprimir Proveedor");
-		btnNewButton.setHorizontalAlignment(SwingConstants.LEFT);
-		btnNewButton.setIcon(new ImageIcon("/home/ferc/git/SistemaFerreteria21/Iconos_Imagenes/merge_to_pdf.png"));
-		btnNewButton.setBounds(230, 12, 206, 39);
-		panel.add(btnNewButton);
-		
-		JButton btnNewButton_1 = new JButton("Imprimir categoria");
-		btnNewButton_1.setHorizontalAlignment(SwingConstants.LEFT);
-		btnNewButton_1.setIcon(new ImageIcon("/home/ferc/git/SistemaFerreteria21/Iconos_Imagenes/merge_to_pdf.png"));
-		btnNewButton_1.addActionListener(new ActionListener() {
+		JButton btnImprimir = new JButton("Listar");
+		btnImprimir.setHorizontalAlignment(SwingConstants.LEFT);
+		btnImprimir.setIcon(new ImageIcon("/home/ferc/git/SistemaFerreteria21/Iconos_Imagenes/merge_to_pdf.png"));
+		btnImprimir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				dameProductoPorCategoria(e);
 			}
 		});
-		btnNewButton_1.setBounds(230, 71, 206, 42);
-		panel.add(btnNewButton_1);
+		btnImprimir.setBounds(22, 63, 104, 42);
+		panel.add(btnImprimir);
 		
 		JButton btnNewButton_2 = new JButton("");
 		btnNewButton_2.addActionListener(new ActionListener() {
@@ -176,6 +172,13 @@ public class VistaReportes extends JFrame {
 
 	}
 	
+	private void modeloComboBoxCategoria() {
+
+		modeloCategoria = new DefaultComboBoxModel(new Controlador().dameCategorias());
+		comboBoxCategorias.setModel(modeloCategoria);
+
+	}
+	
 	private void ColumnasDeTablaProveedores() {
 
 		modeloTabla.addColumn("Codigo");
@@ -211,7 +214,7 @@ public class VistaReportes extends JFrame {
 			// GUARDAMOS LO QUE OBTENEMOS DE LA BASE DE DATOS EN UN MODELO
 			DefaultComboBoxModel modCategoria = new DefaultComboBoxModel(base.dameCategorias(prove.getIdProveedor()));
 			// MOSTRAMOS EL MODELO EN EL COMBOBOX
-			comboBoxCategorias.setModel(modCategoria);
+		
 		}
 	}
 	private void listarProveedoresActionPerformed(ActionEvent e) {

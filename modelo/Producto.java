@@ -7,12 +7,12 @@ public class Producto {
 	private int id;
 	private String idProducto;
 	private String nomProducto;
-	private int stockProducto;
+	private double stockProducto;
 	private String idProveedorProducto;
 	private File fotoProducto;
 	private double precioCompraProducto;
 	private double precioVentaProducto;
-	private int existenciasProducto;
+	private double existenciasProducto;
 	private int idCategoria;
 	private int idProveedor;
 	private String nomProveedor;
@@ -89,7 +89,7 @@ public class Producto {
 
 	}
 
-	public Producto(String id1, String nombre, int stock, String codigoProveedor, File fotoProducto, double pCosto,
+	public Producto(String id1, String nombre, double stock, String codigoProveedor, File fotoProducto, double pCosto,
 			double pVenta, double dolar, int existenciasProducto, int idCategoria, int idProveedor, double iva,
 			double bon1, double bon2, double bon3, double bon4, double flete, double ganancia) {
 
@@ -114,8 +114,8 @@ public class Producto {
 	}
 
 	// UPDATE
-	public Producto(int id, String idProducto, String nombre, int stock, String codigoProveedor, File fotoProducto,
-			double pCosto, double pVenta, double dolar, int existenciasProducto, int idCategoria, int idProveedor,
+	public Producto(int id, String idProducto, String nombre, double stock, String codigoProveedor, File fotoProducto,
+			double pCosto, double pVenta, double dolar, double existenciasProducto, int idCategoria, int idProveedor,
 			double iva, double bon1, double bon2, double bon3, double bon4, double flete, double ganancia) {
 
 		this.id = id;
@@ -239,11 +239,11 @@ public class Producto {
 	}
 
 
-	public int getStockProducto() {
+	public double getStockProducto() {
 		return stockProducto;
 	}
 
-	public void setStockProducto(int stockProducto) {
+	public void setStockProducto(double stockProducto) {
 		this.stockProducto = stockProducto;
 	}
 
@@ -279,11 +279,11 @@ public class Producto {
 		this.precioVentaProducto = precioVentaProducto;
 	}
 
-	public int getExistenciasProducto() {
+	public double getExistenciasProducto() {
 		return existenciasProducto;
 	}
 
-	public void setExistenciasProducto(int existenciasProducto) {
+	public void setExistenciasProducto(double existenciasProducto) {
 		this.existenciasProducto = existenciasProducto;
 	}
 

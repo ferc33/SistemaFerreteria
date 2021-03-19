@@ -26,7 +26,6 @@ public class EditarCategoria extends JDialog {
 	protected JTextField txtDesc;
 	protected JLabel lblId;
 	protected Controlador base;
-	protected  JComboBox comboBoxProveedores;
 	private DefaultComboBoxModel modeloCategoria = null;
 
 	/**
@@ -48,7 +47,7 @@ public class EditarCategoria extends JDialog {
 	public EditarCategoria() {
 		base = new Controlador();
 		
-		setBounds(100, 100, 427, 158);
+		setBounds(100, 100, 295, 156);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -61,8 +60,8 @@ public class EditarCategoria extends JDialog {
 				editarCategoriaActionPerformed(e);
 			}
 		});
-		btnModificar.setIcon(new ImageIcon(EditarCategoria.class.getResource("/Iconos_Imagenes/check_mark.png")));
-		btnModificar.setBounds(150, 64, 135, 27);
+		btnModificar.setIcon(new ImageIcon("/home/ferc/git/SistemaFerreteria21/Iconos_Imagenes/Aceptar1.png"));
+		btnModificar.setBounds(80, 62, 135, 54);
 		contentPanel.add(btnModificar);
 
 		txtDesc = new JTextField();
@@ -77,10 +76,6 @@ public class EditarCategoria extends JDialog {
 		lblId = new JLabel("");
 		lblId.setBounds(22, 51, 60, 17);
 		contentPanel.add(lblId);
-
-		comboBoxProveedores = new JComboBox();
-		comboBoxProveedores.setBounds(236, 12, 168, 26);
-		contentPanel.add(comboBoxProveedores);
 		
 		cargarModeloProv();
 	}
@@ -89,9 +84,9 @@ public class EditarCategoria extends JDialog {
 
 		int id = Integer.parseInt(lblId.getText());
 		String nombre = txtDesc.getText();
-		Proveedor proveedor = (Proveedor) comboBoxProveedores.getSelectedItem();
+		
 
-		Categoria categoria = new Categoria(id, nombre, proveedor.getIdProveedor());
+		Categoria categoria = new Categoria(id, nombre);
 
 		base.actualizarCategoria(categoria);
 
@@ -104,7 +99,6 @@ public class EditarCategoria extends JDialog {
 	public void cargarModeloProv() {
 
 		modeloCategoria = new DefaultComboBoxModel(base.dameProveedores());
-		comboBoxProveedores.setModel(modeloCategoria);
 
 	}
 }

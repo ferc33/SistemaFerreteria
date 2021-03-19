@@ -156,11 +156,11 @@ public class Controlador {
 
 		try {
 
-			String SentenciaSql = "INSERT INTO `db-sistema`.CAT_CATEGORIA (NOM_CATEGORIA,ID_PROVEEDOR) VALUES(?,?) ";
+			String SentenciaSql = "INSERT INTO `db-sistema`.CAT_CATEGORIA (NOM_CATEGORIA) VALUES(?) ";
 
 			prep = Conexion.prepareStatement(SentenciaSql);
 			prep.setString(1, categoria.getNomCategoria());
-			prep.setInt(2, categoria.getIdProveedor());
+			
 
 			prep.execute();
 
@@ -247,7 +247,7 @@ public class Controlador {
 				prep.setString(1, producto.getIdProducto());
 				prep.setString(2, producto.getNomProducto());
 				prep.setString(3, producto.getIdProveedorProducto());
-				prep.setInt(4, producto.getStockProducto());
+				prep.setDouble(4, producto.getStockProducto());
 				prep.setBlob(5, fis);
 				prep.setDouble(6, producto.getPrecioCompraProducto());
 				prep.setDouble(7, producto.getPrecioVentaProducto());
@@ -279,7 +279,7 @@ public class Controlador {
 				prep.setString(1, producto.getIdProducto());
 				prep.setString(2, producto.getNomProducto());
 				prep.setString(3, producto.getIdProveedorProducto());
-				prep.setInt(4, producto.getStockProducto());
+				prep.setDouble(4, producto.getStockProducto());
 				// prep.setBlob(5, fis);
 				prep.setDouble(5, producto.getPrecioCompraProducto());
 				prep.setDouble(6, producto.getPrecioVentaProducto());
@@ -475,7 +475,7 @@ public class Controlador {
 				String idprod = rs.getString("ID_PROD");
 				String nomprod = rs.getString("NOM_PROD");
 				String idProveedorProd = rs.getString("ID_PROVEEDOR_PROD");
-				int stock = rs.getInt("STOCK_PROD");
+				double stock = rs.getDouble("STOCK_PROD");
 				double precioVenta = rs.getDouble("PRECIO_VENTA_PROD");
 				double precioCompra = rs.getDouble("PRECIO_COMPRA_PROD");
 				int existencia = rs.getInt("EXISTENCIA_PROD");
@@ -492,11 +492,13 @@ public class Controlador {
 
 				
 				
-				Producto producto = new Producto(idProducto, idprod, nomprod, stock, idProveedorProd, precioCompra,	precioVenta,
-						existencia, idCategoria, idProveedor, iva, bon1, bon2, bon3, bon4, flete,ganancia);
+				Producto producto = new Producto(idProducto,idprod,nomprod,stock,idProveedorProd,null,precioCompra,precioVenta,dolar,existencia,idCategoria,idProveedor,iva,bon1,bon2,bon3,bon4,flete,ganancia);
+				
 
+	
 				listaProductosBD.add(producto);
-
+				
+				System.out.println(producto.getStockProducto());
 		
 				
 			}
@@ -508,6 +510,7 @@ public class Controlador {
 		return listaProductosBD;
 
 	}
+	
 
 	public ArrayList<Presupuesto> getPresupuestoPorID(int numPresupuesto) {
 
@@ -992,6 +995,42 @@ public class Controlador {
 		return categoria;
 
 	}
+	
+	public ArrayList<Categoria> dameCategoriasTabla() {
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Conexion conn = new Conexion();
+		Connection con = conn.getConexion();
+
+		ArrayList<Categoria> categoria = new ArrayList<Categoria>();
+
+		Categoria cat = null;
+
+		try {
+
+			String sql = "SELECT * FROM CAT_CATEGORIA";
+			ps = con.prepareStatement(sql);
+			rs = ps.executeQuery();
+	
+			// llena el combobox de categorias
+			while (rs.next()) {
+
+				cat = new Categoria();
+				cat.setIdCategoria(rs.getInt("ID_CATEGORIA"));
+				cat.setNomCategoria(rs.getString("NOM_CATEGORIA"));
+				categoria.add(cat);
+			}
+
+			rs.close();
+
+		} catch (Exception e) {
+
+		}
+
+		return categoria;
+
+	}
 
 	public ArrayList<Proveedor> obtenerProveedoresPorCriterio(String criterio) {
 
@@ -1128,40 +1167,7 @@ public class Controlador {
 
 	}
 
-	public ArrayList<Categoria> dameCategoriasTabla() {
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		Conexion conn = new Conexion();
-		Connection con = conn.getConexion();
-
-		ArrayList<Categoria> categoria = new ArrayList<Categoria>();
-
-		try {
-
-			String sql = "SELECT ID_CATEGORIA, NOM_CATEGORIA, CAT_PROVEEDORES.NOM_PROVEEDOR FROM CAT_CATEGORIA"
-					+ " INNER JOIN CAT_PROVEEDORES ON CAT_CATEGORIA.ID_PROVEEDOR = CAT_PROVEEDORES.ID_PROVEEDOR ";
-			ps = con.prepareStatement(sql);
-			rs = ps.executeQuery();
-
-			while (rs.next()) {
-
-				Categoria cat = new Categoria();
-				cat.setIdCategoria(rs.getInt("ID_CATEGORIA"));
-				cat.setNomCategoria(rs.getString("NOM_CATEGORIA"));
-				cat.setNomProveedor(rs.getString("NOM_PROVEEDOR"));
-				categoria.add(cat);
-			}
-
-			rs.close();
-
-		} catch (Exception e) {
-
-		}
-
-		return categoria;
-
-	}
 
 /// ////////////////////////////// METODO PARA REALIZAR BUSQUEDA POR CRITERIO NOMBRES
 	public ArrayList<Producto> obtenerProductosPorCadenaTexto(String criterio) {
@@ -1324,7 +1330,7 @@ public class Controlador {
 
 			prep = Conexion.prepareStatement("UPDATE `db-sistema`.CAT_PRODUCTOS SET STOCK_PROD = ? WHERE ID_PROD=?");
 
-			prep.setInt(1, producto.getStockProducto());
+			prep.setDouble(1, producto.getStockProducto());
 
 			prep.setString(2, producto.getIdProducto());
 
@@ -1349,11 +1355,11 @@ public class Controlador {
 		try {
 
 			prep = Conexion.prepareStatement(
-					"UPDATE `db-sistema`.CAT_CATEGORIA SET ID_PROVEEDOR = ?,NOM_CATEGORIA = ? WHERE ID_CATEGORIA=?");
+					"UPDATE `db-sistema`.CAT_CATEGORIA SET NOM_CATEGORIA = ? WHERE ID_CATEGORIA=?");
 
-			prep.setInt(1, categoria.getIdProveedor());
-			prep.setString(2, categoria.getNomCategoria());
-			prep.setInt(3, categoria.getIdCategoria());
+			
+			prep.setString(1, categoria.getNomCategoria());
+			prep.setInt(2, categoria.getIdCategoria());
 
 			prep.executeUpdate();
 
