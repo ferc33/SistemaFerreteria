@@ -15,6 +15,7 @@ import javax.swing.table.TableColumn;
 import controlador.Controlador;
 import modelo.Categoria;
 import modelo.Proveedor;
+import singleton.VistaArticulosSingleton;
 import vistaInventario.MarcoArticulo;
 import vistaProveedores.VMproveedores;
 import vistaProveedores.VistaProveedores;
@@ -44,6 +45,7 @@ public class VistaCategoria extends JFrame {
 	private JTextField txtDesc;
 	public static String nombre;
 	public static int id;
+	public static MarcoArticulo marco = new MarcoArticulo();
 	// PERTENECE A ESTA VENTANA
 
 	/**
@@ -160,14 +162,18 @@ public class VistaCategoria extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				Categoria categoriaEnvio = (Categoria) modeloTabla.getValueAt(tablaCategoria.getSelectedRow(), 1);
-
-				MarcoArticulo marco = new MarcoArticulo();
+				
+				//JFrame Articulo = VistaArticulosSingleton.getInstance();
 				
 				
+				/*marco.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				marco.setVisible(true);
+				marco.setAlwaysOnTop(false);
+				marco.setLocationRelativeTo(new VistaCategoria( ));*/
 				marco.lblIdCategoria.setText(String.valueOf(categoriaEnvio.getIdCategoria()));
 				marco.txtCategoria.setText(categoriaEnvio.getNomCategoria());
-				System.out.println(categoriaEnvio.getNomCategoria());
-
+				dispose();
+				
 			}
 		});
 
